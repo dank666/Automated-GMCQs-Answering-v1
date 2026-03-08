@@ -212,4 +212,4 @@ if __name__ == "__main__":
         evaluate_json(args.json_file, custom_dict=args.dict)
     else:
         print("请提供有效的 JSON 文件路径。")
-        print("示例语法：python batch_evaluate.py ./multiple_questions/multiple_Climatology.json -d 词典1.csv")
+        print("示例语法：python batch_evaluate.py single_questions/single_Climatology.json -d dic_all/dic_all_single_multiple.csv")

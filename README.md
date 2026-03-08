@@ -1,3 +1,80 @@
+# Automated GMCQs Answering System (高中地理多项选择题自动化问答系统)
+
+[English](#-english-version) | [中文说明](#-中文版-chinese-version)
+
+---
+
+## 🇬🇧 English Version
+
+### 📖 Introduction
+This project aims to build an intelligent closed-loop system capable of automatically understanding, reasoning, and answering high school geography multiple-choice questions (applicable to single and multiple choices). 
+The system is based on **Natural Language Processing (NLP)** and **Three-way Concept Lattices** theory. It extracts geographic features from question stems, constructs a decision formal context matrix using a domain-specific dictionary, deduces high-confidence geographic rules via three-way concept lattice algorithms, and finally performs semantic mapping against options to achieve fully automated answer inference.
+
+### 💻 System Interface
+Below are the system's operational and reasoning interface demonstrations:
+
+#### Interface 1: Dashboard & Overview
+![System Interface 1](interface_photo/interface1.png)
+
+#### Interface 2: Question Bank Import & Processing
+![System Interface 2](interface_photo/interface2.png)
+
+#### Interface 3: Knowledge Graph & Concept Lattice
+![System Interface 3](interface_photo/interface3.png)
+
+#### Interface 4: Rule Extraction & Traceability
+![System Interface 4](interface_photo/interface4.png)
+
+### ⚙️ Architecture & Pipeline
+The entire project is orchestrated by the master controller `batch_evaluate.py` for fully automated batch processing:
+
+1. **Geographic Feature Extraction (`geo_keyword_extractor.py`, `entity_attribute.py`)**: Uses `jieba` and TextRank to process question texts, force-mapping features to the built-in domain dictionary to capture hierarchical and peer relationships of geographic entities.
+2. **Formal Context Generation (`formal_context_builder.py`)**: Constructs a standard binary (0,1) Decision Formal Context Matrix based on keyword association sets and options.
+3. **Three-way Concept Lattice Calculation (`threeWcl.py`, `util/CL.py`)**: Applies three-way decision operations on condition and decision domains, generating underlying concept models.
+4. **Decision Result Processing & Merging (`process_result_decision.py`, `merge_concepts.py`)**: Handles dimensional offsets of model computations and extracts concept lattice intersections to form high-matching object sets.
+5. **Intelligent Rule Extraction & Auto-Inference (`extract_three_way_rules_enhanced.py`)**: Filters valid geographic rules (e.g., `[Karst feature, Stone forest] -> [Cave]`) based on Confidence, Support, and Rule Strength. The inference layer scores these rules using a dual-mode matching mechanism (character overlap + semantic intersection) to predict the best answer (A/B/C/D) and auto-generates prediction accuracy %.
+
+### 🚀 Quick Start
+
+#### 1. Environment Setup
+Please ensure you are using Python 3 and install the required packages:
+```bash
+pip install pandas numpy jieba
+```
+
+#### 2. Execute Batch Evaluation
+Use the command line to start the main controller, specifying the JSON question bank and dictionary:
+```bash
+# Example: Evaluate Climatology single questions using the combined dictionary
+python batch_evaluate.py single_questions/single_Climatology.json -d dic_all/dic_all_single_multiple.csv
+```
+
+#### 3. View the Analysis Report
+After completion, the engine outputs a detailed execution report in `/test_results/batch_evaluation_summary.txt`, which includes:
+* Question stems and options
+* Comparison between Correct Answers vs. System Predicted Answers
+* Extracted Rule chains with Confidence and Inference Strength
+* Overall Accuracy (%) mapping.
+
+### 📁 Directory Layout
+
+```text
+├── batch_evaluate.py           # Core orchestrator / execution pipeline
+├── single_questions/           # Structured JSON sources for single-choice questions
+├── multiple_questions/         # Structured JSON sources for multiple-choice questions
+├── dic_all/                    # Standardized high school geography domain mappings (.csv)
+├── test_results/               # Auto-inference reports and intermediate rule logs
+├── test_contexts/              # Temporary matrices for decision formal contexts
+├── interface_photo/            ![System interface screenshots]
+├── CHANGELOG.md                # Update history and refactoring logs
+├── README.md                   # Project documentation
+└── util/                       # Underlying lattice matrix calculation assets
+```
+
+---
+
+## 🇨🇳 中文版 (Chinese Version)
+
 # 高中地理多项选择题自动化问答系统 
 **(Automated GMCQs Answering System)**
 

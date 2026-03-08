@@ -1,0 +1,116 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "geography_category": "Hydrology",
+      "difficulty": "easy",
+      "question": "外流河是指最终流入海洋的河流，我国东部地区河流多属外流河，水量丰富，水系发达，具有重要的航运和灌溉价值。外流河的最终归宿是：",
+      "options": {
+        "A": "海洋",
+        "B": "湖泊",
+        "C": "沙漠"
+      },
+      "correct_answer": ["A"],
+      "explanation": "外流河的最终归宿是海洋。"
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "内流河是指流经内陆地区，最终流入湖泊、盐沼或沙漠的河流，我国西部地区河流多属内流河，水量较少，水系较为稀疏，具有重要的生态和旅游价值。内流河的最终归宿是：",
+      "options": {
+        "A": "海洋",
+        "B": "湖泊",
+        "C": "沙漠"
+      },
+      "correct_answer": ["B"],
+      "explanation": "内流河的最终归宿是湖泊、盐沼或沙漠。"
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "河流的汛期是指河流水位明显上涨的时期，我国东部季风区河流的汛期主要集中在夏秋季节，与降水的季节分配密切相关。决定河流汛期的主要因素是：",
+      "options": {
+        "A": "降水",
+        "B": "蒸发",
+        "C": "地形"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "冰川补给是指由冰川融水补给河流的方式，主要分布在高山地区和高纬度地区，补给时间集中在气温较高的夏季。冰川补给的主要影响因素是：",
+      "options": {
+        "A": "气温",
+        "B": "降水",
+        "C": "植被"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "湖泊按成因可分为构造湖、火山口湖、堰塞湖等多种类型，其中构造湖是由地壳运动形成的凹陷积水而成。构造湖的形成原因是：",
+      "options": {
+        "A": "地壳运动",
+        "B": "火山喷发",
+        "C": "河流堆积"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "地下水是埋藏在地表以下岩石空隙中的水体，按埋藏条件可分为潜水和承压水，是重要的淡水资源。地下水的赋存空间是：",
+      "options": {
+        "A": "岩石空隙",
+        "B": "地表水体",
+        "C": "大气层"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "河流的含沙量是指单位体积水体中所含泥沙的数量，黄河是世界上含沙量最大的河流，主要与流经黄土高原有关。影响河流含沙量的主要因素是：",
+      "options": {
+        "A": "土壤侵蚀",
+        "B": "降水量",
+        "C": "气温"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "河流的径流量是指一定时期内通过河流某一断面的水量，受降水、蒸发、下渗等多种因素影响，是衡量水资源的重要指标。决定河流径流量的首要因素是：",
+      "options": {
+        "A": "降水量",
+        "B": "蒸发量",
+        "C": "地形"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    }
+  ]
+}

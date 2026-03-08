@@ -1,0 +1,116 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "geography_category": "Human and Economic Geography",
+      "difficulty": "medium",
+      "question": "农业生产受自然条件和社会经济条件的双重影响，其中气候、地形、土壤等自然因素起着基础性作用。影响农业的自然因素有：",
+      "options": {
+        "A": "气候",
+        "B": "地形",
+        "C": "政策"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "multiple",
+      "geography_category": "Human and Economic Geography",
+      "difficulty": "medium",
+      "question": "我国畜牧业发展需要大面积的放牧场地,主要依托草地和部分林地资源,这两种土地类型为畜牧业提供了良好的自然条件。畜牧业依托的土地类型有：",
+      "options": {
+        "A": "草地",
+        "B": "林地",
+        "C": "水域"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "multiple",
+      "geography_category": "Human and Economic Geography",
+      "difficulty": "medium",
+      "question": "城市化是社会经济发展的必然趋势，在多个方面都有明显体现。城市化的表现包括：",
+      "options": {
+        "A": "人口增加",
+        "B": "用地扩张",
+        "C": "农村增多"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "multiple",
+      "geography_category": "Human and Economic Geography",
+      "difficulty": "medium",
+      "question": "工业区位选择需要综合考虑原料、燃料、市场、交通、劳动力等多种因素，以降低成本提高效益。工业区位因素包括：",
+      "options": {
+        "A": "交通",
+        "B": "市场",
+        "C": "气候"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "multiple",
+      "geography_category": "Human and Economic Geography",
+      "difficulty": "medium",
+      "question": "人口迁移受经济发展水平、就业机会、生活条件、政策因素等多方面影响，对迁出地和迁入地都会产生重要影响。人口迁移的影响因素包括：",
+      "options": {
+        "A": "经济",
+        "B": "政策",
+        "C": "地形"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "multiple",
+      "geography_category": "Human and Economic Geography",
+      "difficulty": "medium",
+      "question": "现代交通运输方式多样，各有优缺点，铁路运输量大速度快，公路机动灵活，需要合理选择。主要交通方式包括：",
+      "options": {
+        "A": "铁路",
+        "B": "公路",
+        "C": "土壤"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "multiple",
+      "geography_category": "Human and Economic Geography",
+      "difficulty": "medium",
+      "question": "资源型城市的发展高度依赖矿产资源开发，产业结构单一，资源枯竭后面临转型困难等问题。资源型城市的特点有：",
+      "options": {
+        "A": "依赖资源",
+        "B": "产业单一",
+        "C": "多元发展"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "multiple",
+      "geography_category": "Human and Economic Geography",
+      "difficulty": "medium",
+      "question": "区域协调发展要求统筹考虑各地区的资源禀赋、产业基础、发展水平等因素，优化资源配置和产业布局。区域发展需要考虑：",
+      "options": {
+        "A": "资源配置",
+        "B": "产业布局",
+        "C": "地貌"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "河流的补给方式多样，不同地区的河流因气候和地形条件的差异而具有不同的补给来源。河流的主要补给类型包括：",
+      "options": {
+        "A": "雨水",
+        "B": "冰雪融水",
+        "C": "风力"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "multiple",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "长江是我国第一大河，流域面积广阔，水能资源丰富，水文特征显著。长江的水文特征包括：",
+      "options": {
+        "A": "水量大",
+        "B": "汛期长",
+        "C": "含沙量最大"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "multiple",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "河流的水量大小受流域内降水量、蒸发量、流域面积等多种因素的综合影响。影响河流水量的主要因素有：",
+      "options": {
+        "A": "降水",
+        "B": "流域面积",
+        "C": "岩石类型"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "multiple",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "湖泊按成因可分为多种类型，不同类型的湖泊具有不同的形态特征。湖泊的主要类型包括：",
+      "options": {
+        "A": "构造湖",
+        "B": "火山湖",
+        "C": "风蚀湖"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "multiple",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "地下水是重要的淡水资源，按埋藏条件可分为不同类型，它们的补给和运动方式不同。地下水的类型包括：",
+      "options": {
+        "A": "潜水",
+        "B": "承压水",
+        "C": "海水"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "multiple",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "黄河是中华民族的母亲河，中游流经黄土高原，水土流失严重，河流特征独特。黄河的主要特征包括：",
+      "options": {
+        "A": "含沙量大",
+        "B": "地上河",
+        "C": "水量最大"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "multiple",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "河流水系是指河流干流、支流构成的脉络系统，其形态和特征受地形、气候等因素影响。水系特征包括：",
+      "options": {
+        "A": "流向",
+        "B": "河网密度",
+        "C": "气温"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "multiple",
+      "geography_category": "Hydrology",
+      "difficulty": "medium",
+      "question": "河流的径流量受气候、植被覆盖、土壤性质等多种自然因素和人类活动的综合影响。影响河流径流的因素有：",
+      "options": {
+        "A": "降水",
+        "B": "植被",
+        "C": "矿产"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    }
+  ]
+}

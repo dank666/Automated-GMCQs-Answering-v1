@@ -1,0 +1,7 @@
+中文分类            英文
+地形地貌类          Topography and Geomorphology
+气候类              Climatology
+水文类              Hydrology
+土壤与植被类         Soil and Vegetation
+人文经济地理类       Human and Economic Geography
+地理过程与原理类      Geographical Processes and Principles

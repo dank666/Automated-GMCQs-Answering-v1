@@ -1,0 +1,26 @@
+# Python #
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments #
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# VS Code #
+.vscode/
+
+# Mac OS #
+.DS_Store
+
+# Logs and Data #
+*.log
+# 如果需要在云端保存结果，可以注释掉下面两行
+# test_results/
+# test_contexts/

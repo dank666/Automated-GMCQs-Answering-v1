@@ -1,0 +1,102 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "地中海气候的显著特征是夏季炎热干燥、冬季温和多雨，这种气候类型主要分布在南北纬30°-40°的大陆西岸。该气候夏季的降水特点是：",
+      "options": {
+        "A": "干燥",
+        "B": "多雨",
+        "C": "适中"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "温带季风气候的特点是夏季高温多雨、冬季寒冷干燥，四季分明，降水集中在夏季，我国华北地区是典型代表。该气候冬季的气温特点是：",
+      "options": {
+        "A": "寒冷",
+        "B": "温暖",
+        "C": "炎热"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "温带大陆性气候分布在大陆内部地区，远离海洋，海洋性气团难以到达，因此降水稀少，气温年较差和日较差都很大。该气候的降水特点是：",
+      "options": {
+        "A": "稀少",
+        "B": "丰富",
+        "C": "均匀"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "极地气候分布在南北极地区，全年严寒，即使最暖月平均气温也在10℃以下，降水极少，冰雪覆盖，植被稀少。该气候的气温特点是：",
+      "options": {
+        "A": "严寒",
+        "B": "温和",
+        "C": "炎热"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "热带草原气候分布在热带雨林气候区的南北两侧，有明显的干湿季交替现象，湿季降水集中，干季降水稀少。该气候的季节特征是：",
+      "options": {
+        "A": "干湿季",
+        "B": "四季如春",
+        "C": "冬夏两季"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "高山气候分布在高海拔山地，随着海拔升高气温降低，降水先增后减，气候垂直分异明显，植被呈现垂直带谱。该气候的主要影响因素是：",
+      "options": {
+        "A": "海拔",
+        "B": "纬度",
+        "C": "洋流"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "亚热带季风气候分布在我国秦岭淮河以南地区，夏季高温多雨，冬季温和少雨，年降水量丰富，雨热同期有利于农业生产。该气候的水热配合特点是：",
+      "options": {
+        "A": "雨热同期",
+        "B": "雨热不同期",
+        "C": "全年少雨"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    }
+  ]
+}

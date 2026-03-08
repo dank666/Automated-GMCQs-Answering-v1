@@ -1,0 +1,116 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "板块构造理论认为地球岩石圈由若干板块组成，板块之间相对运动导致地震、火山、造山运动等地质现象的发生。板块边界最常见的地质现象是：",
+      "options": {
+        "A": "地震",
+        "B": "沉积",
+        "C": "风化"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "水循环是指自然界中水分通过蒸发、水汽输送、降水、径流等环节不断运动和转化的过程，联系着海洋、陆地、大气等圈层。水循环最重要的能量来源是：",
+      "options": {
+        "A": "太阳辐射",
+        "B": "地热",
+        "C": "生物能"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "大气环流是指全球范围内大气的大规模运动，主要包括三圈环流、季风环流等形式，是形成全球气候分布格局的主要原因。大气环流的根本动力是：",
+      "options": {
+        "A": "热力差异",
+        "B": "地转偏向力",
+        "C": "摩擦力"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "岩石圈物质循环描述了岩浆岩、沉积岩、变质岩三大岩石类型之间相互转化的过程，体现了地球内外力的共同作用。岩浆岩的形成过程是：",
+      "options": {
+        "A": "岩浆冷凝",
+        "B": "沉积压实",
+        "C": "变质作用"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "全球气候变暖是当前面临的重大环境问题，主要由温室气体排放增加引起，导致海平面上升、极端天气增多等后果。气候变暖的主要原因是：",
+      "options": {
+        "A": "温室气体",
+        "B": "太阳活动",
+        "C": "火山喷发"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "地壳运动是地球内力作用的主要表现，包括水平运动和垂直运动两种基本形式，是塑造地表形态的重要动力。地壳运动的能量来源是：",
+      "options": {
+        "A": "地球内部",
+        "B": "太阳辐射",
+        "C": "潮汐力"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "风化作用是岩石在地表环境下受温度变化、水、生物等因素影响发生破碎和分解的过程，可分为物理风化、化学风化和生物风化。风化作用的主要影响因素是：",
+      "options": {
+        "A": "气候",
+        "B": "纬度",
+        "C": "海拔"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "生态系统是由生物群落及其生存环境组成的统一整体，通过物质循环和能量流动维持系统的稳定，生产者是生态系统的基础。生态系统的能量来源是：",
+      "options": {
+        "A": "太阳能",
+        "B": "化学能",
+        "C": "热能"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    }
+  ]
+}

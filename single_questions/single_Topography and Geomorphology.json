@@ -1,0 +1,130 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "喀斯特地貌是由可溶性岩石在水的化学溶蚀和机械侵蚀作用下形成的独特地貌类型，在我国西南地区分布广泛。形成喀斯特地貌的主要岩石类型是：",
+      "options": {
+        "A": "石灰岩",
+        "B": "花岗岩",
+        "C": "玄武岩"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "黄土高原是世界上最大的黄土堆积区，其黄土层厚度大、分布广，地表沟壑纵横，水土流失严重。黄土高原最典型的地貌特征是：",
+      "options": {
+        "A": "千沟万壑",
+        "B": "平坦开阔",
+        "C": "冰川侵蚀"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "三角洲是河流携带的泥沙在河口地区沉积形成的地貌单元，其平原面积广阔，土壤肥沃，是重要的农业区。形成三角洲的主要地质作用是：",
+      "options": {
+        "A": "沉积作用",
+        "B": "侵蚀作用",
+        "C": "变质作用"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "丹霞地貌是红色砂砾岩在长期的风化剥蚀和流水侵蚀作用下形成的地貌景观，以陡峭的崖壁和奇特的造型而闻名。丹霞地貌的典型颜色是：",
+      "options": {
+        "A": "红色",
+        "B": "黄色",
+        "C": "灰色"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "冰川地貌是由冰川的侵蚀和堆积作用形成的地表形态，在高纬度和高海拔地区分布较多，具有独特的地貌特征。冰川侵蚀形成的典型地貌是：",
+      "options": {
+        "A": "U型谷",
+        "B": "V型谷",
+        "C": "峡谷"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "沙漠地区由于降水稀少、植被覆盖率低，风力作用强烈，形成了以风蚀和风积为主的独特地貌景观。沙漠地区最常见的风积地貌是：",
+      "options": {
+        "A": "沙丘",
+        "B": "石林",
+        "C": "溶洞"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "火山地貌是由火山喷发活动形成的地表形态，包括火山锥、火山口等典型地貌单元，多分布在板块边界地带。火山喷发的主要物质是：",
+      "options": {
+        "A": "岩浆",
+        "B": "冰川",
+        "C": "黄土"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "海岸地貌是海浪、潮汐等海洋动力作用于陆地边缘形成的地貌类型，包括海蚀崖、海滩等多种形态。海岸侵蚀的主要动力是：",
+      "options": {
+        "A": "海浪",
+        "B": "河流",
+        "C": "冰川"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 9,
+      "type": "single",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "断层是地壳岩层在构造应力作用下发生破裂并沿破裂面产生明显位移的地质构造，常形成陡峭的断层崖等地貌。形成断层的主要作用力是：",
+      "options": {
+        "A": "构造力",
+        "B": "重力",
+        "C": "风力"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "我国东部地区气候湿润，热量充足，植被广泛分布，植被类型呈现明显的纬度地带性。该地区的植被类型包括：",
+      "options": {
+        "A": "森林",
+        "B": "草原",
+        "C": "荒漠"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "multiple",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "红壤主要分布在我国南方地区，在高温多雨的气候条件下发育而成，有机质含量较低。红壤的特点包括：",
+      "options": {
+        "A": "酸性",
+        "B": "红色",
+        "C": "碱性"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "multiple",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "森林是陆地生态系统的主体，具有多种重要的生态功能，对环境保护意义重大。森林的生态作用包括：",
+      "options": {
+        "A": "涵养水源",
+        "B": "保持水土",
+        "C": "增加风沙"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "multiple",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "草原主要分布在温带地区，降水较少，植被类型独特，是重要的畜牧业基地。草原分布区的特征包括：",
+      "options": {
+        "A": "半干旱",
+        "B": "草本为主",
+        "C": "森林茂密"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "multiple",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "黑土是世界上品质最好的土壤之一，主要分布在我国东北地区，适宜发展农业生产。黑土的特点包括：",
+      "options": {
+        "A": "肥沃",
+        "B": "有机质多",
+        "C": "贫瘠"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "multiple",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "山地植被的垂直分布规律明显，从山麓到山顶依次出现不同的植被带，主要受海拔引起的热量变化控制。影响植被垂直分布的因素包括：",
+      "options": {
+        "A": "海拔",
+        "B": "热量",
+        "C": "经度"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "multiple",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "热带雨林是地球上生物多样性最高的生态系统，全年高温多雨，植物种类繁多。热带雨林的特征包括：",
+      "options": {
+        "A": "物种丰富",
+        "B": "分层明显",
+        "C": "落叶林"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "multiple",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "土壤退化是指土壤质量下降的过程，有多种不同的表现形式，严重影响土地生产力。土壤退化的类型包括：",
+      "options": {
+        "A": "水土流失",
+        "B": "盐碱化",
+        "C": "肥力增加"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    }
+  ]
+}

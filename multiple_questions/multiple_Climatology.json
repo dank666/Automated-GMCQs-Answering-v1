@@ -1,0 +1,130 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "我国东部地区受季风环流影响显著，夏季高温多雨，冬季寒冷干燥，雨热同期特征明显。季风气候的主要特征包括：",
+      "options": {
+        "A": "雨热同期",
+        "B": "风向季变",
+        "C": "全年少雨"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "multiple",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "气候的形成受多种因素共同影响，其中地理位置、地表状况、海洋状况等都发挥着重要作用。影响气候的主要因素有：",
+      "options": {
+        "A": "纬度",
+        "B": "地形",
+        "C": "洋流"
+      },
+      "correct_answer": ["A", "B", "C"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "multiple",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "温带海洋性气候分布在大陆西岸，全年气温适中，降水季节分配均匀，气温年较差小。该气候的特点包括：",
+      "options": {
+        "A": "温和",
+        "B": "湿润",
+        "C": "干旱"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "multiple",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "我国季风区范围广阔，覆盖了多种气候类型，这些气候区都具有明显的季节变化特征。我国季风区包括的气候类型有：",
+      "options": {
+        "A": "亚热带季风",
+        "B": "温带季风",
+        "C": "热带沙漠"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "multiple",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "热带气候区终年高温，但降水差异显著，形成了多种不同的气候类型。热带气候类型包括：",
+      "options": {
+        "A": "热带雨林",
+        "B": "热带草原",
+        "C": "温带海洋"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "multiple",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "大陆性气候区远离海洋，气温日较差和年较差都很大，降水稀少。大陆性气候的特征包括：",
+      "options": {
+        "A": "干燥",
+        "B": "温差大",
+        "C": "降水多"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "multiple",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "地中海气候分布在南北纬30°-40°的大陆西岸，冬夏季节气温和降水特征差异明显。该气候的特征有：",
+      "options": {
+        "A": "夏季干热",
+        "B": "冬雨夏干",
+        "C": "全年高温"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "multiple",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "降水的形成需要充足的水汽、上升运动和凝结核等条件，受大气环流、地形等因素影响。影响降水分布的因素包括：",
+      "options": {
+        "A": "大气环流",
+        "B": "地形",
+        "C": "纬度"
+      },
+      "correct_answer": ["A", "B", "C"],
+      "explanation": ""
+    },
+    {
+      "id": 9,
+      "type": "multiple",
+      "geography_category": "Climatology",
+      "difficulty": "medium",
+      "question": "寒潮是我国冬半年常见的灾害性天气，由强冷空气迅速南下造成大范围剧烈天气变化。寒潮的主要影响包括：",
+      "options": {
+        "A": "降温",
+        "B": "大风",
+        "C": "增温"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "我国西部地区地势高峻，山脉众多，高原和盆地相间分布，构成了独特的地形格局。该地区的主要地形类型包括：",
+      "options": {
+        "A": "高原",
+        "B": "平原",
+        "C": "盆地"
+      },
+      "correct_answer": ["A", "C"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "multiple",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "喀斯特地貌广泛分布于我国西南地区，其形成需要可溶性岩石和流水的长期溶蚀作用。该地貌的典型景观包括：",
+      "options": {
+        "A": "溶洞",
+        "B": "石林",
+        "C": "沙丘"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "multiple",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "外力作用对地表形态的塑造具有重要影响，流水、风力、冰川等都能形成特殊地貌。下列属于外力作用形成的地貌是：",
+      "options": {
+        "A": "峡谷",
+        "B": "三角洲",
+        "C": "火山锥"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "multiple",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "青藏高原被称为世界屋脊，平均海拔超过4000米，冰川广布，是多条大河的发源地。该高原的地貌特征包括：",
+      "options": {
+        "A": "高寒",
+        "B": "冰川",
+        "C": "平坦"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "multiple",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "黄土高原位于我国中部地区，黄土层深厚，水土流失严重，形成了千沟万壑的独特景观。该高原的主要地貌类型有：",
+      "options": {
+        "A": "黄土塬",
+        "B": "黄土梁",
+        "C": "冰川谷"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "multiple",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "丹霞地貌以红色砂砾岩为主，经过长期的流水侵蚀和风化作用形成奇特的山峰和峭壁。其形成的主要条件包括：",
+      "options": {
+        "A": "红层",
+        "B": "流水",
+        "C": "火山"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "multiple",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "我国东部地区地势低平，河网密布，冲积平原广阔，是重要的农业生产基地。该地区的主要地形特征包括：",
+      "options": {
+        "A": "平原",
+        "B": "丘陵",
+        "C": "高原"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "multiple",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "山地的垂直地带性是指随海拔升高，温度、降水、植被等自然要素呈现规律性变化。影响垂直地带性的因素包括：",
+      "options": {
+        "A": "海拔",
+        "B": "纬度",
+        "C": "降水"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    },
+    {
+      "id": 9,
+      "type": "multiple",
+      "geography_category": "Topography and Geomorphology",
+      "difficulty": "medium",
+      "question": "冰川地貌主要分布在高纬度和高海拔地区，由冰川的侵蚀和堆积作用形成特殊的地表形态。典型的冰川地貌包括：",
+      "options": {
+        "A": "角峰",
+        "B": "U型谷",
+        "C": "沙丘"
+      },
+      "correct_answer": ["A", "B"],
+      "explanation": ""
+    }
+  ]
+}

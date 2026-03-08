@@ -1,0 +1,116 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "single",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "森林是陆地生态系统中最重要的植被类型，具有涵养水源、保持水土、调节气候等多种生态功能，对维护生态平衡意义重大。森林最主要的生态功能是：",
+      "options": {
+        "A": "涵养水源",
+        "B": "提供木材",
+        "C": "美化环境"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "single",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "红壤主要分布在我国南方湿热地区，在高温多雨的气候条件下发育而成，土壤呈酸性，有机质含量相对较低。红壤的酸碱性特征是：",
+      "options": {
+        "A": "酸性",
+        "B": "碱性",
+        "C": "中性"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "single",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "黑土是世界上最肥沃的土壤之一，主要分布在我国东北平原，有机质含量高，土层深厚，是重要的粮食生产基地。黑土最突出的特点是：",
+      "options": {
+        "A": "肥沃",
+        "B": "贫瘠",
+        "C": "盐碱"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "single",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "荒漠植被主要分布在干旱地区，降水稀少，植物种类少，覆盖度低，多为耐旱的灌木和草本植物。荒漠地区的降水特点是：",
+      "options": {
+        "A": "稀少",
+        "B": "丰富",
+        "C": "季节性强"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "single",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "草原植被主要分布在半干旱的温带地区，以草本植物为主，是重要的畜牧业基地，在我国主要分布在内蒙古高原。草原植被的优势植物类型是：",
+      "options": {
+        "A": "草本",
+        "B": "乔木",
+        "C": "灌木"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "single",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "土壤侵蚀是指土壤在水力、风力等外力作用下发生破坏和移动的过程，会导致土地退化，影响农业生产和生态环境。造成土壤侵蚀的主要自然因素是：",
+      "options": {
+        "A": "降水",
+        "B": "温度",
+        "C": "光照"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "single",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "盐碱土主要分布在干旱半干旱地区以及沿海低洼地带，土壤中盐分含量高，影响作物生长，需要通过灌溉淋洗等措施改良。盐碱土的主要特征是：",
+      "options": {
+        "A": "含盐高",
+        "B": "肥力高",
+        "C": "酸性强"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "single",
+      "geography_category": "Soil and Vegetation",
+      "difficulty": "medium",
+      "question": "热带雨林是地球上生物多样性最丰富的生态系统，植被茂密，分层明显，全年常绿，在调节全球气候方面发挥重要作用。热带雨林的物种多样性特点是：",
+      "options": {
+        "A": "丰富",
+        "B": "单一",
+        "C": "中等"
+      },
+      "correct_answer": ["A"],
+      "explanation": ""
+    }
+  ]
+}

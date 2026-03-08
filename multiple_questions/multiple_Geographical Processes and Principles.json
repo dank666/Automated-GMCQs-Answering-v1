@@ -1,0 +1,116 @@
+{
+  "geography_questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "板块构造学说认为地球岩石圈由多个板块组成，板块的运动导致多种地质现象的发生。板块运动的表现包括：",
+      "options": {
+        "A": "地震",
+        "B": "火山",
+        "C": "降雨"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 2,
+      "type": "multiple",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "水循环是自然界水分不断运动和转化的过程，包括多个相互联系的环节。水循环的主要环节包括：",
+      "options": {
+        "A": "蒸发",
+        "B": "降水",
+        "C": "风化"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 3,
+      "type": "multiple",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "大气环流是全球范围内空气的大规模运动，有多种不同的形式，对全球气候分布起决定作用。大气环流的类型有：",
+      "options": {
+        "A": "三圈环流",
+        "B": "季风环流",
+        "C": "水循环"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 4,
+      "type": "multiple",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "岩石圈物质循环描述了三大岩石类型之间相互转化的过程。岩石的类型包括：",
+      "options": {
+        "A": "岩浆岩",
+        "B": "沉积岩",
+        "C": "大气"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 5,
+      "type": "multiple",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "全球气候变暖是当前面临的重大环境问题，对自然环境和人类社会产生广泛影响。气候变暖的影响有：",
+      "options": {
+        "A": "海平面上升",
+        "B": "极端天气",
+        "C": "气温下降"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 6,
+      "type": "multiple",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "地壳运动是地球内力作用的主要表现形式，有不同的运动方式，塑造着地表的基本形态。地壳运动的类型包括：",
+      "options": {
+        "A": "水平运动",
+        "B": "垂直运动",
+        "C": "降水"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 7,
+      "type": "multiple",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "风化作用是岩石在地表条件下发生破碎和分解的过程，有多种不同的作用方式。风化作用的类型有：",
+      "options": {
+        "A": "物理风化",
+        "B": "化学风化",
+        "C": "板块运动"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    },
+    {
+      "id": 8,
+      "type": "multiple",
+      "geography_category": "Geographical Processes and Principles",
+      "difficulty": "medium",
+      "question": "生态系统由生物成分和非生物成分组成，其中生物部分包含多种不同功能的生物类群。生态系统的生物成分包括：",
+      "options": {
+        "A": "生产者",
+        "B": "消费者",
+        "C": "岩石"
+      },
+      "correct_answer": ["A","B"],
+      "explanation": ""
+    }
+  ]
+}

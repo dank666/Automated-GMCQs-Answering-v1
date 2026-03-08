@@ -21,6 +21,6 @@ venv.bak/
 
 # Logs and Data #
 *.log
-# 如果需要在云端保存结果，可以注释掉下面两行
-# test_results/
-# test_contexts/
+# 不把本地测试产生的中间背景文件和结果传到云端
+test_results/
+test_contexts/

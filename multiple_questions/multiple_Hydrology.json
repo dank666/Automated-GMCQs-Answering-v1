@@ -4,7 +4,7 @@
       "id": 1,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "河流的水文特征主要包括径流量、含沙量、汛期、结冰期等，其形成与气候、地形、植被等因素密切相关，下列关于河流径流量的说法正确的有（）",
       "options": {
         "A": "降水丰富的地区，河流径流量通常较大",
@@ -21,7 +21,7 @@
       "id": 2,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "水循环是自然界中水体运动的主要形式，分为海陆间循环、陆地内循环和海上内循环，下列关于海陆间循环的说法正确的有（）",
       "options": {
         "A": "涉及海洋和陆地，是最重要的水循环类型",
@@ -39,7 +39,7 @@
       "id": 3,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "河流的含沙量是指单位体积水中所含泥沙的质量，其大小受多种因素影响，下列能导致河流含沙量增大的因素有（）",
       "options": {
         "A": "流域内植被覆盖率低",
@@ -56,7 +56,7 @@
       "id": 4,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "汛期是指河流由于流域内季节性降水、融雪等原因，水位周期性上涨的时期，下列关于河流汛期的说法正确的有（）",
       "options": {
         "A": "夏雨型气候区，河流汛期多在夏季",
@@ -91,7 +91,7 @@
       "id": 6,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "地下水是水资源的重要组成部分，按埋藏条件可分为潜水和承压水，下列关于潜水的说法正确的有（）",
       "options": {
         "A": "埋藏在地下第一个隔水层之上",
@@ -108,7 +108,7 @@
       "id": 7,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "承压水是埋藏在两个隔水层之间的地下水，其水文特征具有独特性，下列关于承压水的说法正确的有（）",
       "options": {
         "A": "无自由水面，承受一定的静水压力",
@@ -142,7 +142,7 @@
       "id": 9,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "冰川是地球上最大的淡水储备库，主要分布在高纬度和高海拔地区，下列关于冰川的说法正确的有（）",
       "options": {
         "A": "按形态可分为大陆冰川和山岳冰川",
@@ -159,7 +159,7 @@
       "id": 10,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "河流的补给类型主要有雨水补给、积雪融水补给、冰川融水补给、地下水补给等，下列关于雨水补给的说法正确的有（）",
       "options": {
         "A": "是我国东部地区河流最主要的补给类型",
@@ -176,7 +176,7 @@
       "id": 11,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "积雪融水补给是高纬度和高海拔地区河流的重要补给方式，下列关于积雪融水补给的说法正确的有（）",
       "options": {
         "A": "补给高峰多在春季，与气温回升同步",
@@ -193,7 +193,7 @@
       "id": 12,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "冰川融水补给主要分布在高山冰川地区，下列关于冰川融水补给的说法正确的有（）",
       "options": {
         "A": "补给量随气温升高而增大，夏季达到高峰",
@@ -211,7 +211,7 @@
       "id": 13,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "地下水补给具有稳定性和持续性，下列关于地下水补给的说法正确的有（）",
       "options": {
         "A": "全年补给均匀，能缓解河流枯水期的缺水问题",
@@ -228,7 +228,7 @@
       "id": 14,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "径流量的季节变化是河流水文特征的重要表现，下列关于径流量季节变化的说法正确的有（）",
       "options": {
         "A": "夏雨型气候区，河流径流量夏季大、冬季小",
@@ -262,7 +262,7 @@
       "id": 16,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "凌汛是河流结冰期的特殊水文现象，多发生在有结冰期且由低纬流向高纬的河流，下列关于凌汛的说法正确的有（）",
       "options": {
         "A": "春季气温回升时，低纬河段冰先融化，高纬河段未融化，易形成凌汛",
@@ -279,7 +279,7 @@
       "id": 17,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "河流的流速是指河流中水质点的流动速度，其大小与地形、河道形态等有关，下列说法正确的有（）",
       "options": {
         "A": "地形坡度越大，河流流速越快",
@@ -296,7 +296,7 @@
       "id": 18,
       "type": "multiple",
       "geography_category": "Geomorphology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "河道的形态分为平直河道、弯曲河道和分叉河道，下列关于弯曲河道的说法正确的有（）",
       "options": {
         "A": "凹岸受侵蚀，凸岸受堆积",
@@ -313,7 +313,7 @@
       "id": 19,
       "type": "multiple",
       "geography_category": "Geomorphology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "三角洲是河流在入海口处形成的堆积地貌，其形成与河流含沙量、海水动力等有关，下列关于三角洲的说法正确的有（）",
       "options": {
         "A": "河流含沙量越大，三角洲发育越明显",
@@ -331,7 +331,7 @@
       "id": 20,
       "type": "multiple",
       "geography_category": "Geomorphology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "冲积扇是河流出山口处形成的堆积地貌，多分布在山区与平原的过渡地带，下列关于冲积扇的说法正确的有（）",
       "options": {
         "A": "由河流携带的泥沙在出山口处堆积形成",
@@ -349,7 +349,7 @@
       "id": 21,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "水资源是指可被人类利用的淡水资源，主要包括河流水、淡水湖泊水、地下水等，下列关于水资源的说法正确的有（）",
       "options": {
         "A": "水资源具有可再生性，但再生速度有限",
@@ -367,7 +367,7 @@
       "id": 22,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "水资源短缺分为资源型短缺和水质型短缺，下列关于资源型短缺的说法正确的有（）",
       "options": {
         "A": "主要由于降水稀少、水资源总量不足导致",
@@ -385,7 +385,7 @@
       "id": 23,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "水质型短缺是指水资源总量充足，但因污染导致水质变差，无法正常利用，下列说法正确的有（）",
       "options": {
         "A": "主要由工业废水、生活污水排放导致",
@@ -403,7 +403,7 @@
       "id": 24,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "跨流域调水是解决水资源空间分布不均的重要措施，下列关于跨流域调水的说法正确的有（）",
       "options": {
         "A": "能缓解调入区水资源短缺问题",
@@ -421,7 +421,7 @@
       "id": 25,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "修建水库是解决水资源时间分布不均的重要措施，下列关于水库作用的说法正确的有（）",
       "options": {
         "A": "调节河流径流量，缓解汛期洪涝、枯水期缺水",
@@ -455,7 +455,7 @@
       "id": 27,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "海水的温度分布具有明显的时空差异，下列关于海水温度的说法正确的有（）",
       "options": {
         "A": "表层海水温度由赤道向两极逐渐降低",
@@ -472,7 +472,7 @@
       "id": 28,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "洋流是海洋中大规模的海水定向流动，按性质可分为暖流和寒流，下列关于暖流的说法正确的有（）",
       "options": {
         "A": "从低纬流向高纬，水温高于流经海区",
@@ -490,7 +490,7 @@
       "id": 29,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "寒流是从高纬流向低纬的洋流，其对地理环境的影响有（）",
       "options": {
         "A": "降温减湿，可能形成荒漠景观",
@@ -507,7 +507,7 @@
       "id": 30,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "洋流对航海的影响显著，下列说法正确的有（）",
       "options": {
         "A": "顺洋流航行，速度快，节省燃料",
@@ -525,7 +525,7 @@
       "id": 31,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "世界著名的渔场多形成于寒暖流交汇处或上升流区域，下列关于渔场形成的说法正确的有（）",
       "options": {
         "A": "寒暖流交汇处，海水搅动，底层营养物质上泛，浮游生物丰富",
@@ -543,7 +543,7 @@
       "id": 32,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "潮汐是海水在天体引潮力作用下产生的周期性涨落现象，下列关于潮汐的说法正确的有（）",
       "options": {
         "A": "一天中通常有两次涨潮和两次落潮",
@@ -561,7 +561,7 @@
       "id": 33,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "海啸是由海底地震、火山爆发、海底滑坡等引发的巨大海浪，下列关于海啸的说法正确的有（）",
       "options": {
         "A": "海啸波长很长，传播速度快，破坏力极强",
@@ -579,7 +579,7 @@
       "id": 34,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "地表径流是水循环中重要的环节，下列关于地表径流的说法正确的有（）",
       "options": {
         "A": "是指地表的雨水、融雪等沿地面流动形成的水流",
@@ -597,7 +597,7 @@
       "id": 35,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "地下径流是指地下水在地下岩石空隙中流动形成的水流，下列关于地下径流的说法正确的有（）",
       "options": {
         "A": "流动速度较慢，补给速度也较慢",
@@ -614,7 +614,7 @@
       "id": 36,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "植被对水文的影响显著，下列关于植被对河流影响的说法正确的有（）",
       "options": {
         "A": "植被覆盖率高，能减少地表径流，增加地下径流",
@@ -631,7 +631,7 @@
       "id": 37,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "地形对河流的影响主要体现在流向、流速、流域面积等方面，下列说法正确的有（）",
       "options": {
         "A": "地势西高东低，河流多自西向东流",
@@ -649,7 +649,7 @@
       "id": 38,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "气候对水文的影响是最主要的因素，下列关于气候对河流影响的说法正确的有（）",
       "options": {
         "A": "热带雨林气候区，河流径流量大，季节变化小",
@@ -667,7 +667,7 @@
       "id": 39,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "人类活动对水文环境的影响越来越大，下列人类活动能影响河流径流量的有（）",
       "options": {
         "A": "修建水库，调节河流径流量的季节分配",
@@ -684,7 +684,7 @@
       "id": 40,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "围湖造田是人类利用湖泊的一种方式，但会对水文环境产生负面影响，下列说法正确的有（）",
       "options": {
         "A": "围湖造田会减少湖泊面积，降低湖泊的调蓄能力",
@@ -701,7 +701,7 @@
       "id": 41,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "湿地是指地表常年或季节性积水、生长湿地生物的地区，具有重要的水文生态功能，下列关于湿地的说法正确的有（）",
       "options": {
         "A": "能调蓄洪水，减缓河流汛期水位上涨",
@@ -718,7 +718,7 @@
       "id": 42,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "河流的含沙量不仅影响河流自身，还会影响下游地区的环境，下列关于河流含沙量过大的危害有（）",
       "options": {
         "A": "淤积河道，降低河流的通航能力",
@@ -735,7 +735,7 @@
       "id": 43,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于我国主要河流的水文特征，说法正确的有（）",
       "options": {
         "A": "长江是我国径流量最大、流域面积最广的河流，无结冰期",
@@ -753,7 +753,7 @@
       "id": 44,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于我国内流河和外流河的说法，正确的有（）",
       "options": {
         "A": "外流河最终注入海洋，内流河最终未注入海洋",
@@ -771,7 +771,7 @@
       "id": 45,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "湖水的性质主要包括湖水的温度、盐度等，下列关于湖泊水温的说法正确的有（）",
       "options": {
         "A": "表层湖水温度随季节变化，夏季高、冬季低",
@@ -788,7 +788,7 @@
       "id": 46,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "按湖水盐度，湖泊可分为淡水湖、咸水湖和盐湖，下列说法正确的有（）",
       "options": {
         "A": "淡水湖湖水盐度低于1‰，多为外流湖",
@@ -806,7 +806,7 @@
       "id": 47,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "冰川融水对河流的补给具有明显的季节变化，下列关于冰川融水补给河流的特点有（）",
       "options": {
         "A": "补给量与气温呈正相关，夏季补给量最大",
@@ -823,7 +823,7 @@
       "id": 48,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "雨水补给的河流，其径流量的季节变化与降水的季节变化密切相关，下列说法正确的有（）",
       "options": {
         "A": "夏雨型气候区，河流夏季径流量最大",
@@ -840,7 +840,7 @@
       "id": 49,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "地下水与河流之间存在相互补给关系，下列说法正确的有（）",
       "options": {
         "A": "河流丰水期，河水补给地下水",
@@ -857,7 +857,7 @@
       "id": 50,
       "type": "multiple",
       "geography_category": "Geomorphology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "河流的侵蚀作用主要包括溯源侵蚀、下蚀和侧蚀，下列关于河流侵蚀作用的说法正确的有（）",
       "options": {
         "A": "溯源侵蚀使河流向源头延伸，增加河流长度",
@@ -874,7 +874,7 @@
       "id": 51,
       "type": "multiple",
       "geography_category": "Geomorphology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "河流的堆积作用主要发生在河流的中下游地区，下列关于河流堆积作用的说法正确的有（）",
       "options": {
         "A": "流速减慢时，河流携带的泥沙会发生堆积",
@@ -891,7 +891,7 @@
       "id": 52,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "水资源的合理利用是实现可持续发展的重要保障，下列关于水资源合理利用的措施有（）",
       "options": {
         "A": "节约用水，提高水资源利用效率",
@@ -908,7 +908,7 @@
       "id": 53,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于海水运动的说法，正确的有（）",
       "options": {
         "A": "海水运动主要包括洋流、潮汐、波浪等形式",
@@ -925,7 +925,7 @@
       "id": 54,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "波浪是海水受风力、天体引力等作用产生的起伏运动，下列关于波浪的说法正确的有（）",
       "options": {
         "A": "风力越大，波浪的高度和波长越大",
@@ -942,7 +942,7 @@
       "id": 55,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于暖流对沿岸气候影响的说法，正确的有（）",
       "options": {
         "A": "增温增湿，使沿岸气候更加湿润温暖",
@@ -959,7 +959,7 @@
       "id": 56,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于寒流对沿岸气候影响的说法，正确的有（）",
       "options": {
         "A": "降温减湿，使沿岸气候更加干旱寒冷",
@@ -976,7 +976,7 @@
       "id": 57,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "跨流域调水工程的建设需要考虑多方面因素，下列说法正确的有（）",
       "options": {
         "A": "要考虑调出区和调入区的水资源分布情况",
@@ -993,7 +993,7 @@
       "id": 58,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "水库的建设对河流生态环境有一定的影响，下列说法正确的有（）",
       "options": {
         "A": "能调节河流径流量，减少洪涝灾害",
@@ -1010,7 +1010,7 @@
       "id": 59,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于我国水资源时空分布特点的说法，正确的有（）",
       "options": {
         "A": "空间分布：东多西少、南多北少",
@@ -1043,7 +1043,7 @@
       "id": 61,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于河流水系特征的说法，正确的有（）",
       "options": {
         "A": "水系特征包括河流长度、流域面积、支流分布等",
@@ -1061,7 +1061,7 @@
       "id": 62,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于河流长度和流域面积的说法，正确的有（）",
       "options": {
         "A": "河流长度是指从河源到河口的直线距离",
@@ -1078,7 +1078,7 @@
       "id": 63,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "地下水的开采需要合理控制，下列关于过度开采地下水的危害有（）",
       "options": {
         "A": "导致地下水位下降，形成地下漏斗区",
@@ -1095,7 +1095,7 @@
       "id": 64,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于潜水和承压水的区别，说法正确的有（）",
       "options": {
         "A": "潜水有自由水面，承压水无自由水面",
@@ -1113,7 +1113,7 @@
       "id": 65,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "冰川按形态可分为大陆冰川和山岳冰川，下列关于大陆冰川的说法正确的有（）",
       "options": {
         "A": "主要分布在南极大陆和格陵兰岛",
@@ -1130,7 +1130,7 @@
       "id": 66,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "山岳冰川主要分布在高山地区，下列关于山岳冰川的说法正确的有（）",
       "options": {
         "A": "形态多样，常见的有冰斗冰川、山谷冰川等",
@@ -1148,7 +1148,7 @@
       "id": 67,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于水循环意义的说法，正确的有（）",
       "options": {
         "A": "维持全球水体的动态平衡",
@@ -1166,7 +1166,7 @@
       "id": 68,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "陆地内循环是水循环的重要组成部分，下列关于陆地内循环的说法正确的有（）",
       "options": {
         "A": "仅发生在陆地内部，不涉及海洋",
@@ -1201,7 +1201,7 @@
       "id": 70,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于河流汛期与补给类型的关系，说法正确的有（）",
       "options": {
         "A": "雨水补给为主的河流，汛期与降水期一致",
@@ -1218,7 +1218,7 @@
       "id": 71,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于河流结冰期与气候的关系，说法正确的有（）",
       "options": {
         "A": "温带季风气候区，河流有结冰期，结冰期较短",
@@ -1235,7 +1235,7 @@
       "id": 72,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于河流含沙量与植被覆盖率的关系，说法正确的有（）",
       "options": {
         "A": "植被覆盖率越高，河流含沙量越低",
@@ -1252,7 +1252,7 @@
       "id": 73,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于河流流速与河道形态的关系，说法正确的有（）",
       "options": {
         "A": "河道狭窄、平直，流速较快",
@@ -1269,7 +1269,7 @@
       "id": 74,
       "type": "multiple",
       "geography_category": "Geomorphology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "三角洲的发育需要具备一定的条件，下列说法正确的有（）",
       "options": {
         "A": "河流含沙量较大，有充足的堆积物质",
@@ -1286,7 +1286,7 @@
       "id": 75,
       "type": "multiple",
       "geography_category": "Geomorphology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "冲积扇的形成与河流的搬运和堆积作用密切相关，下列说法正确的有（）",
       "options": {
         "A": "河流出山口后，流速减慢，泥沙堆积形成",
@@ -1303,7 +1303,7 @@
       "id": 76,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于水资源的特性，说法正确的有（）",
       "options": {
         "A": "可再生性：水资源能通过水循环不断再生",
@@ -1320,7 +1320,7 @@
       "id": 77,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于海水盐度分布规律的说法，正确的有（）",
       "options": {
         "A": "从赤道向两极，海水盐度先升高后降低",
@@ -1338,7 +1338,7 @@
       "id": 78,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于海水温度分布规律的说法，正确的有（）",
       "options": {
         "A": "表层海水温度由赤道向两极逐渐降低",
@@ -1373,7 +1373,7 @@
       "id": 80,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于世界主要洋流的说法，正确的有（）",
       "options": {
         "A": "北大西洋暖流是世界上最强大的暖流",
@@ -1391,7 +1391,7 @@
       "id": 81,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "潮汐能的开发利用具有重要意义，下列关于潮汐能的说法正确的有（）",
       "options": {
         "A": "是一种清洁、可再生的能源",
@@ -1408,7 +1408,7 @@
       "id": 82,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "海啸的破坏力极强，下列关于海啸的防范措施有（）",
       "options": {
         "A": "建立海啸预警系统，及时发布预警信息",
@@ -1425,7 +1425,7 @@
       "id": 83,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于人类活动对地下水影响的说法，正确的有（）",
       "options": {
         "A": "过度开采地下水会导致地下水位下降",
@@ -1443,7 +1443,7 @@
       "id": 84,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于湿地的水文生态功能，说法正确的有（）",
       "options": {
         "A": "涵养水源，增加地下水补给",
@@ -1461,7 +1461,7 @@
       "id": 85,
       "type": "multiple",
       "geography_category": "Geomorphology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于河流侵蚀地貌的说法，正确的有（）",
       "options": {
         "A": "溯源侵蚀能使河流变长，形成峡谷",
@@ -1478,7 +1478,7 @@
       "id": 86,
       "type": "multiple",
       "geography_category": "Geomorphology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于河流堆积地貌的说法，正确的有（）",
       "options": {
         "A": "河漫滩是河流中下游地区常见的堆积地貌",
@@ -1495,7 +1495,7 @@
       "id": 87,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于我国内流河的水文特征，说法正确的有（）",
       "options": {
         "A": "补给主要依靠冰川融水和山地降水",
@@ -1512,7 +1512,7 @@
       "id": 88,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于我国外流河的水文特征，说法正确的有（）",
       "options": {
         "A": "补给主要依靠雨水，径流量季节变化与降水一致",
@@ -1529,7 +1529,7 @@
       "id": 89,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于湖水补给的说法，正确的有（）",
       "options": {
         "A": "淡水湖的补给主要依靠河流和降水",
@@ -1546,7 +1546,7 @@
       "id": 90,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于湖泊的生态功能，说法正确的有（）",
       "options": {
         "A": "调节局部气候，增加空气湿度",
@@ -1563,7 +1563,7 @@
       "id": 91,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于冰川对地理环境的影响，说法正确的有（）",
       "options": {
         "A": "冰川侵蚀能塑造冰斗、角峰等地貌",
@@ -1580,7 +1580,7 @@
       "id": 92,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于水循环各环节的说法，正确的有（）",
       "options": {
         "A": "蒸发是水循环的起点，主要发生在海洋和陆地表面",
@@ -1598,7 +1598,7 @@
       "id": 93,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于水资源短缺的原因，说法正确的有（）",
       "options": {
         "A": "人口增长、经济发展，对水资源的需求量增加",
@@ -1615,7 +1615,7 @@
       "id": 94,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于节约用水的措施，说法正确的有（）",
       "options": {
         "A": "农业上采用滴灌、喷灌，减少灌溉用水浪费",
@@ -1633,7 +1633,7 @@
       "id": 95,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于水污染的危害，说法正确的有（）",
       "options": {
         "A": "污染水资源，导致水质型缺水",
@@ -1650,7 +1650,7 @@
       "id": 96,
       "type": "multiple",
       "geography_category": "Oceanography",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于洋流对海洋生物的影响，说法正确的有（）",
       "options": {
         "A": "寒暖流交汇处，易形成渔场",
@@ -1667,7 +1667,7 @@
       "id": 97,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于河流与人类活动的关系，说法正确的有（）",
       "options": {
         "A": "河流为人类提供水源、灌溉、航运等便利",
@@ -1684,7 +1684,7 @@
       "id": 98,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于地下水资源的特点，说法正确的有（）",
       "options": {
         "A": "埋藏在地下，不易受污染（承压水）",
@@ -1701,7 +1701,7 @@
       "id": 99,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于水文灾害的说法，正确的有（）",
       "options": {
         "A": "水文灾害主要包括洪水、干旱、海啸、凌汛等",
@@ -1719,7 +1719,7 @@
       "id": 100,
       "type": "multiple",
       "geography_category": "Hydrology",
-      "difficulty": "easy",
+      "difficulty": "medium",
       "question": "下列关于水文研究的意义，说法正确的有（）",
       "options": {
         "A": "指导水资源的合理开发利用，缓解水资源短缺问题",

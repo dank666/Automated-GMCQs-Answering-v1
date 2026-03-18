@@ -76,6 +76,13 @@ def evaluate_json(json_path, custom_dict=None):
         options = [v for k, v in opts_dict.items()]
         correct_answer = q_info.get("correct_answer", [])
 
+        if isinstance(correct_answer, str):
+            correct_answer = [correct_answer.strip()] if correct_answer.strip() else []
+        elif isinstance(correct_answer, list):
+            correct_answer = [str(x).strip() for x in correct_answer if str(x).strip()]
+        else:
+            correct_answer = []
+
         print(f"【题干】: {stem}")
         print(f"【选项】: {options}")
         print(f"【参考答案】: {correct_answer}")

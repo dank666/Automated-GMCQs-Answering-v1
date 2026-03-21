@@ -128,28 +128,31 @@ def evaluate_json(json_path, custom_dict=None):
             predicted_answer = []
             if final_rules:
                 vote_scores = {k: 0.0 for k in opts_dict.keys()}
+
                 for rule in final_rules:
                     conclusions = rule.get('conclusion_names', [])
                     strength = rule.get('rule_strength', 0)
                     for conclude_item in conclusions:
                         parts = [p.strip() for p in conclude_item.split('+')]
                         for part in parts:
+                            exact_matched = False
                             for k, v in opts_dict.items():
                                 if part == v or part in v or v in part:
                                     vote_scores[k] += strength
-                                else:
-                                    # 基于分词的语义重合度
+                                    exact_matched = True
+
+                            # 未出现精确命中时，才启用严格语义兜底，抑制跨选项串扰
+                            if not exact_matched:
+                                for k, v in opts_dict.items():
                                     sim = context_builder.calculate_similarity(part, v)
-                                    # 基于字符级别的重合度（特别是对于中文）
                                     char_sim = len(set(part) & set(v)) / len(set(part) | set(v)) if (set(part) | set(v)) else 0
-                                    
                                     best_sim = max(sim, char_sim)
-                                    if best_sim > 0.05: # 降低相似度门槛以便命中
-                                        vote_scores[k] += strength * best_sim
+                                    if best_sim >= 0.30:
+                                        vote_scores[k] += strength * best_sim * 0.5
                 
                 if sum(vote_scores.values()) > 0:
                     max_score = max(vote_scores.values())
-                    predicted_answer = [k for k, v in vote_scores.items() if v == max_score and v > 0]
+                    predicted_answer = [k for k, v in vote_scores.items() if abs(v - max_score) < 1e-9 and v > 0]
             predicted_answer.sort()
             
             correct_answer_sorted = sorted(correct_answer)

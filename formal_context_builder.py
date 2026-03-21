@@ -16,53 +16,45 @@ class FormalContextBuilder:
         """
         # 获取所有属性和选项信息
         all_attributes = list(decision_results['attribute_set'])
-        options = decision_results.get('options', [])
-        
-        # 通用的属性分离方法：根据选项数量动态确定决策属性数量
+        options = [str(opt).strip() for opt in decision_results.get('options', []) if str(opt).strip()]
+
+        def _is_option_derived_attr(attr: str) -> bool:
+            if attr in options:
+                return True
+            if '+' not in attr:
+                return False
+            parts = [p.strip() for p in attr.split('+') if p.strip()]
+            return bool(parts) and all(part in options for part in parts)
+
         if options:
-            # 计算选项组合的数量：C(n,1) + C(n,2) + ... + C(n,n) = 2^n - 1
-            # 但这里我们实际生成的是所有组合，包括单个选项和多选项组合
-            from itertools import combinations
-            decision_attr_count = 0
-            for r in range(1, len(options) + 1):
-                decision_attr_count += len(list(combinations(options, r)))
-            
-            print(f"选项数量: {len(options)}, 决策属性数量: {decision_attr_count}")
-            
-            # 后面的决策属性数量个属性是决策属性，前面的是条件属性
-            if len(all_attributes) >= decision_attr_count:
-                # 保持原有顺序，不需要重新排序，因为entity_attribute已经正确排序了
-                self.condition_attributes = all_attributes[:-decision_attr_count]
-                self.decision_attributes = all_attributes[-decision_attr_count:]
+            # 优先使用“实际存在于属性集中的选项/选项组合”作为决策属性，避免数量错位
+            detected_decision_attrs = [attr for attr in all_attributes if _is_option_derived_attr(attr)]
+
+            if detected_decision_attrs:
+                decision_attr_set = set(detected_decision_attrs)
+                self.condition_attributes = [attr for attr in all_attributes if attr not in decision_attr_set]
+                self.decision_attributes = [attr for attr in all_attributes if attr in decision_attr_set]
+                print(f"选项数量: {len(options)}, 实际决策属性数量: {len(self.decision_attributes)}")
             else:
-                # 如果属性总数不足，全部作为决策属性
-                self.condition_attributes = []
-                self.decision_attributes = all_attributes
-        else:
-            # 如果没有选项信息，使用默认方法：检查属性是否包含组合符号
-            condition_attrs = []
-            decision_attrs = []
-            
-            for attr in all_attributes:
-                # 如果属性包含+号，认为是决策属性组合
-                if '+' in attr:
-                    decision_attrs.append(attr)
+                # 回退：按理论组合数从尾部切分（兼容旧数据）
+                from itertools import combinations
+                expected_decision_count = 0
+                for r in range(1, len(options) + 1):
+                    expected_decision_count += len(list(combinations(options, r)))
+
+                print(f"选项数量: {len(options)}, 预期决策属性数量: {expected_decision_count}")
+
+                if len(all_attributes) >= expected_decision_count:
+                    self.condition_attributes = all_attributes[:-expected_decision_count]
+                    self.decision_attributes = all_attributes[-expected_decision_count:]
                 else:
-                    # 检查是否为单个选项
-                    decision_attrs.append(attr)
-            
-            # 简单启发：假设最后的属性是决策属性
-            # 这里需要更智能的判断，暂时使用简单方法
-            total_attrs = len(all_attributes)
-            estimated_decision_count = len([attr for attr in all_attributes if '+' in attr or len(attr) <= 3])
-            
-            if estimated_decision_count > 0:
-                self.condition_attributes = all_attributes[:-estimated_decision_count]
-                self.decision_attributes = all_attributes[-estimated_decision_count:]
-            else:
-                # 默认情况：所有属性都作为条件属性
-                self.condition_attributes = all_attributes
-                self.decision_attributes = []
+                    self.condition_attributes = []
+                    self.decision_attributes = all_attributes
+        else:
+            # 无选项时仅将“组合属性”视为决策属性
+            self.decision_attributes = [attr for attr in all_attributes if '+' in attr]
+            decision_attr_set = set(self.decision_attributes)
+            self.condition_attributes = [attr for attr in all_attributes if attr not in decision_attr_set]
         
         # 存储分离的属性信息
         

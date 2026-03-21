@@ -1,6 +1,5 @@
 {
   "geography_questions": [
-    [
       {
         "id": 1,
         "type": "multiple",
@@ -1773,5 +1772,4 @@
         "explanation": "气候研究在生产生活、防灾减灾、工程建设等方面具有重要指导意义。"
       }
     ]
-  ]
 }

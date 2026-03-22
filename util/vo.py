@@ -3,6 +3,8 @@
 # @Author  : yixuan yang
 # @File    : vo.py
 class Pair:
+    __slots__ = ("l", "r")
+
     def __init__(self, l, r):
         self.l = l
         self.r = r
@@ -18,17 +20,18 @@ class Pair:
         self.l = l
         self.r = r
     def __eq__(self, other):
+        if not isinstance(other, Pair):
+            return False
         return self.l == other.l and self.r == other.r
 
     def __hash__(self):
-        return hash(self.l) and hash(self.r)
+        return hash((self.l, self.r))
 
     def reversal(self):
         temp = self.l
         self.l = self.r
         self.r = temp
         return self
-
 
 
 

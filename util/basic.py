@@ -6,11 +6,37 @@ import util.vo as vo
 
 
 class BasicCL:
+    def __init__(self):
+        self.dictAll = {}  # 全局字典
+        self.objResult = set()  # 对象结果集
+        self.attrResult = set()  # 属性结果集
+        self.bpcAllCL = set()  # 概念格集合
+        self._basis_cache = {}
+        self._intersection_cache = {}
 
-    dictAll = {}  # 全局字典
-    objResult = set()  # 对象结果集
-    attrResult = set()  # 属性结果集
-    bpcAllCL = set()  # 概念格集合
+    def _normalize_index_tuple(self, values):
+        if isinstance(values, int):
+            return (values,)
+        if isinstance(values, tuple):
+            return tuple(sorted(values))
+        return tuple(sorted(values))
+
+    def _get_basis_views(self, bpc):
+        cache_key = id(bpc)
+        cached = self._basis_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        right_tuples = []
+        right_sets = []
+        for pair in bpc:
+            right = tuple(pair.getR())
+            right_tuples.append(right)
+            right_sets.append(set(right))
+
+        cached = (right_tuples, right_sets)
+        self._basis_cache[cache_key] = cached
+        return cached
 
 
     #以对象为key,该对象对应的属性集为value的全对象字典，注：也可以考虑用dict存储
@@ -27,7 +53,7 @@ class BasicCL:
                 if(adjMat[i][j] == 1):
                     tmpList.append(attr.__getitem__(j))
 
-            tmpPair = vo.Pair(tmpObj, tmpList)
+            tmpPair = vo.Pair(tmpObj, tuple(tmpList))
 
             tmpBpc.append(tmpPair)
 
@@ -47,7 +73,7 @@ class BasicCL:
                 if(adjMat[j][i] == 1):
                     tmpList.append(obj.__getitem__(j))
 
-            tmpPair = vo.Pair(tmpAttr, tmpList)
+            tmpPair = vo.Pair(tmpAttr, tuple(tmpList))
             tmpBpc.append(tmpPair)
 
         return tmpBpc
@@ -55,94 +81,64 @@ class BasicCL:
 
     #求概念格的外延集
     def objRes(self,obj,attr,bpcObj,bpcAttr):
+        # 将特殊概念放入,不然后期两两做交运算会丢失外延
+        spcObj = tuple(obj)
+        objResult = {spcObj}
+        objSetCache = {spcObj: set(spcObj)}
 
+        _, attrObjectSets = self._get_basis_views(bpcAttr)
 
-        #将特殊概念放入,不然后期两两做交运算会丢失外延
-        spcObj = []
-        objTest = []
-        for i in range(len(obj)):
-            spcObj.append(obj.__getitem__(i))
-        objTest.append(tuple(spcObj))#这里list为什么要转换为元组呢？因为set是哈希的，不可变的
-                                     #存放的也必须是不可变的，元组和常量才可以存放，list,set都不可以
-                                     #所以先转换为元组，python特性，
-                                     #java没问题，可以直接hashset<ArrayList<String>>
-        self.objResult = set(tuple(objTest))
+        for oneObj in attrObjectSets:
+            current_results = tuple(objResult)
+            for extent in current_results:
+                temp_set = objSetCache[extent].intersection(oneObj)
+                temp = tuple(sorted(temp_set))
+                if temp not in objSetCache:
+                    objSetCache[temp] = temp_set
+                    objResult.add(temp)
 
-        for i in range(len(attr)):
-            objTemp = self.objResult.copy()#将objResult中所有外延集合复制到objTemp
-                                        #方便后续做交运算，必须copy(),=给的是地址，交运算后objResult也会改变
-                                        #python中set做并交运算效率比list高
-            oneObj = set(bpcAttr.__getitem__(i).getR())
-            for j in objTemp:
-                temp = set(j)#元组不可做交运算，所以要转换为set
-                temp.intersection_update(oneObj)
-                temp = sorted(temp)
-                #print("temp:", temp)
-                self.objResult.add(tuple(temp))
-
-        nullContent = ()
-        if nullContent in self.objResult:
-
-            self.objResult.remove(nullContent)#做交运算时会有空集的情况，
-                                              #也会添加入set，所以最后必须去空集处理
-            self.objResult.remove(tuple(spcObj))
-
-        return self.objResult
+        if tuple() in objResult:
+            objResult.discard(tuple())
+            objResult.discard(spcObj)
+        self.objResult = objResult
+        return objResult
 
 
     #获取每条外延所对应的内涵，obt为一条外延
     def intersectForObject(self, obt, bpcObj):
+        normalized_obt = self._normalize_index_tuple(obt)
+        if not normalized_obt:
+            return vo.Pair(0, 0)
 
-        tupTem = ()#存储obj对应的属性列表
-        tmpPair = vo.Pair(0,0)
+        cache_key = (id(bpcObj), normalized_obt)
+        cached = self._intersection_cache.get(cache_key)
+        if cached is not None:
+            return cached
 
-        count = 0
-        obt = tuple(obt)
-        leng = len(obt)
+        rightTuples, rightSets = self._get_basis_views(bpcObj)
 
-        if leng == 1:
-            num = obt.__getitem__(0) - 1
-            tupTem = tuple(bpcObj.__getitem__(num).getR())
-        else:
+        if len(normalized_obt) == 1:
+            tupTem = rightTuples[normalized_obt[0] - 1]
+            tmpPair = vo.Pair(normalized_obt, tupTem) if tupTem else vo.Pair(0, 0)
+            self._intersection_cache[cache_key] = tmpPair
+            return tmpPair
 
-            for i in obt:
-                count = count + 1
-                if len(tupTem) == 0 and count != leng:
-                    tupTem = tuple(bpcObj.__getitem__(i - 1).getR())
-                    #print(tupTem)
-                else:
-                        set1 = set(tupTem)
-                        set2 = set(bpcObj.__getitem__(i -  1).getR())
-                        set1.intersection_update(set2)
-                        set1 = sorted(set1)
-                        tupTem = tuple(set1)
+        set1 = set(rightSets[normalized_obt[0] - 1])
+        for index in normalized_obt[1:]:
+            set1.intersection_update(rightSets[index - 1])
+            if not set1:
+                break
 
-        if(tupTem):
-            tmpPair.setLR(tuple(obt), tupTem)
-
+        tmpPair = vo.Pair(normalized_obt, tuple(sorted(set1))) if set1 else vo.Pair(0, 0)
+        self._intersection_cache[cache_key] = tmpPair
         return tmpPair
 
 
         # 获取每条外延所对应的内涵，obt为一条外延
 
     def intersectForObj(self, obt, bpcObj):
-
-        tupTem = ()  # 存储obj对应的属性列表
-        tmpPair = vo.Pair(0, 0)
-
-
-        if (len(tupTem) == 0):
-            tupTem = tuple(bpcObj.__getitem__(obt - 1).getR())
-            # print(tupTem)
-        else:
-            set1 = set(tupTem)
-            set2 = set(bpcObj.__getitem__(obt - 1).getR())
-            set1.intersection_update(set2)
-            set1 = sorted(set1)
-            tupTem = tuple(set1)
-
-
-        return tupTem
+        pair = self.intersectForObject((obt,), bpcObj)
+        return pair.getR() if pair.getR() != 0 else ()
 
 
     #将外延集中所有外延的内涵求出并返回
@@ -152,12 +148,10 @@ class BasicCL:
         for obt in objResult:
             pair = self.intersectForObject(obt, bpcObj)
             if pair.getR() != 0:
-                pair = self.intersectForObject(pair.getR(), bpcAttr)
-                pair = pair.reversal()
-                bpCliques.append(pair)
-                attrResult.add(pair.getR())
-            else:
-                pass
+                closurePair = self.intersectForObject(pair.getR(), bpcAttr)
+                conceptPair = vo.Pair(closurePair.getR(), closurePair.getL())
+                bpCliques.append(conceptPair)
+                attrResult.add(conceptPair.getR())
 
         return bpCliques, attrResult
 
@@ -167,11 +161,10 @@ class BasicCL:
         objResult = set()
         for att in attrResult:
             pair = self.intersectForObject(att, bpcAttr)
-            pair = self.intersectForObject(pair.getR(), bpcObj)
-            bpCliques.append(pair)
-            objResult.add(pair.getL())
+            if pair.getR() == 0:
+                continue
+            closurePair = self.intersectForObject(pair.getR(), bpcObj)
+            bpCliques.append(closurePair)
+            objResult.add(closurePair.getL())
 
         return bpCliques, objResult
-
-
-

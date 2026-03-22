@@ -39,6 +39,79 @@ def load_formal_context(filename):
 
         return adjMat, adjMatC, obj, attr
 
+def _prepare_concept_views(bp):
+    views = []
+    for pair in bp:
+        left = tuple(pair.getL())
+        right = tuple(pair.getR())
+        views.append((left, right, set(left), set(right)))
+    return views
+
+def _cached_tuple_set(values, cache):
+    cached = cache.get(values)
+    if cached is None:
+        cached = set(values)
+        cache[values] = cached
+    return cached
+
+def _compute_ae(bp1_views, bp2_views, bpcAttr, bpcAttrC, helper, obj, attr):
+    AEC = set()
+    RAE = set()
+    tuple_set_cache = {}
+
+    for left1, _, left1_set, right1_set in bp1_views:
+        for left2, _, left2_set, right2_set in bp2_views:
+            shared_attrs = right1_set.intersection(right2_set)
+            if not shared_attrs:
+                continue
+
+            shared_attrs_tuple = tuple(sorted(shared_attrs))
+            pair = vo.Pair((left1, left2), shared_attrs_tuple)
+
+            setJ = helper.intersectForObject(shared_attrs_tuple, bpcAttr)
+            setM = helper.intersectForObject(shared_attrs_tuple, bpcAttrC)
+
+            if setJ.getR() != 0 and setM.getR() != 0:
+                setJ_right = _cached_tuple_set(setJ.getR(), tuple_set_cache)
+                setM_right = _cached_tuple_set(setM.getR(), tuple_set_cache)
+                if left1_set < setJ_right or left2_set < setM_right:
+                    RAE.add(pair)
+
+            AEC.add(pair)
+
+    AEC.add(vo.Pair((tuple(), tuple()), tuple(attr)))
+    AEC.add(vo.Pair((tuple(obj), tuple(obj)), tuple()))
+    return AEC - RAE
+
+def _compute_oe(bp1_views, bp2_views, bpcObj, bpcObjC, helper, obj, attr):
+    OEC = set()
+    ROE = set()
+    tuple_set_cache = {}
+
+    for _, right1, left1_set, right1_set in bp1_views:
+        for _, right2, left2_set, right2_set in bp2_views:
+            shared_objects = left1_set.intersection(left2_set)
+            if not shared_objects:
+                continue
+
+            shared_objects_tuple = tuple(sorted(shared_objects))
+            pair = vo.Pair(shared_objects_tuple, (right1, right2))
+
+            setJ = helper.intersectForObject(shared_objects_tuple, bpcObj)
+            setM = helper.intersectForObject(shared_objects_tuple, bpcObjC)
+
+            if setJ.getR() != 0 and setM.getR() != 0:
+                setJ_right = _cached_tuple_set(setJ.getR(), tuple_set_cache)
+                setM_right = _cached_tuple_set(setM.getR(), tuple_set_cache)
+                if right1_set < setJ_right or right2_set < setM_right:
+                    ROE.add(pair)
+
+            OEC.add(pair)
+
+    OEC.add(vo.Pair(tuple(obj), (tuple(), tuple())))
+    OEC.add(vo.Pair(tuple(), (tuple(attr), tuple(attr))))
+    return OEC - ROE
+
 def process_formal_context(input_file, output_file):
     """
     处理单个形式背景文件，生成三支概念
@@ -50,10 +123,11 @@ def process_formal_context(input_file, output_file):
     
     # 加载形式背景
     adjMat, adjMatC, obj, attr = load_formal_context(input_file)
+    helper = bs.BasicCL()
     
     # 计算原形式背景和补形式背景下的概念格cl,clC
-    cl = CL.cl(adjMat, obj, attr)
-    clC = CL.cl(adjMatC, obj, attr)
+    cl = CL.cl(adjMat, obj, attr, helper=helper)
+    clC = CL.cl(adjMatC, obj, attr, helper=helper)
 
     bp1 = cl.__getitem__(2)
     bp2 = clC.__getitem__(2)
@@ -64,89 +138,11 @@ def process_formal_context(input_file, output_file):
     bpcAttr = cl.__getitem__(4)
     bpcAttrC = clC.__getitem__(4)
 
-    AEC = set()
-    OEC = set()
+    bp1_views = _prepare_concept_views(bp1)
+    bp2_views = _prepare_concept_views(bp2)
 
-    RAE = set()
-    ROE = set()
-
-    # 计算AE，i.getL()是A1, j.getR()是A2,i.getR()是B1，j.getR()是B2
-    for i in bp1:
-        for j in bp2:
-            set1 = set(i.getR())
-            set2 = set(j.getR())
-            # setT = set1.intersection(set2)
-            setT = set2.intersection(set1)
-            if len(setT) == 0:
-                pass
-            else:
-                tt = []
-                tt.append(i.getL())
-                tt.append(j.getL())
-                p = vo.Pair(tuple(tt), tuple(setT))
-                # if set(i.getL()).issubset(setT):
-                #     RAE.add(p)
-                # print("setT:",setT)
-                setJ = bs.BasicCL().intersectForObject(setT, bpcAttr)  # setJ是原背景下B1交B2 的集合作下运算得到的pair（内涵，外延）
-                setM = bs.BasicCL().intersectForObject(setT, bpcAttrC)
-                # print("setJ:", setJ.getR(), "#", setJ.getL())
-                # print("setM:", setM.getR(), "#", setM.getL())
-
-                if setJ.getR() == 0 or setM.getR() == 0:
-                    pass
-                else:
-
-                    if set(i.getL()) < set(setJ.getR()) or set(j.getL()) < set(setM.getR()):
-                        # print(p.getL(),"#", p.getR())
-                        RAE.add(p)
-                        # A1属于B1交B2 的子集 or A2 属于B1交B2 补背景的 外延子集
-
-                AEC.add(p)
-
-    # 添加特殊顶部和底部两个三支概念
-    spcTop = vo.Pair(tuple([tuple(), tuple()]), tuple(attr))
-    spcButtom = vo.Pair(tuple([tuple(obj), tuple(obj)]), tuple([]))
-    # print(spcTop.getL(), spcTop.getR())
-    AEC.add(spcTop)
-    AEC.add(spcButtom)
-    AE = AEC - RAE
-
-    # 计算OE
-    for i in bp1:
-        for j in bp2:
-            set1 = set(i.getL())
-            set2 = set(j.getL())
-            setT = set1.intersection(set2)
-            if len(setT) == 0:
-                pass
-            else:
-                tt = []
-                tt.append(i.getR())
-                tt.append(j.getR())
-                p = vo.Pair(tuple(setT), tuple(tt))
-                # if set(i.getL()).issubset(setT):
-                #     RAE.add(p)
-                # print("setT:",setT)
-                setJ = bs.BasicCL().intersectForObject(setT, bpcObj)  # setJ是原背景下A1交A2 的集合作下运算得到的pair（外延，内涵）
-                setM = bs.BasicCL().intersectForObject(setT, bpcObjC)
-                # print("setJ:", setJ.getR(), "#", setJ.getL())
-                # print("setM:", setM.getR(), "#", setM.getL())
-
-                if setJ.getR() == 0 or setM.getR() == 0:
-                    pass
-                else:
-
-                    if set(i.getR()) < set(setJ.getR()) or set(j.getR()) < set(setM.getR()):
-                        # print(p.getL(),"#", p.getR())
-                        ROE.add(p)
-                        # A1属于B1交B2 的子集 or A2 属于B1交B2 补背景的 外延子集
-
-                OEC.add(p)
-    spcTop = vo.Pair(tuple(obj), tuple([tuple(), tuple()]))
-    spcButtom = vo.Pair(tuple([]), tuple([tuple(attr), tuple(attr)]))
-    OEC.add(spcTop)
-    OEC.add(spcButtom)
-    OE = OEC - ROE
+    AE = _compute_ae(bp1_views, bp2_views, bpcAttr, bpcAttrC, helper, obj, attr)
+    OE = _compute_oe(bp1_views, bp2_views, bpcObj, bpcObjC, helper, obj, attr)
 
     cur2 = dt.datetime.now()
     time = cur2 - cur1
@@ -246,5 +242,4 @@ def threeWcl():
 
 if __name__ == "__main__":
     threeWcl()
-
 

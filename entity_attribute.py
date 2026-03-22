@@ -1,6 +1,7 @@
 # entity_attribute.py
 from typing import List, Dict, Set
 import jieba.posseg as pseg
+import re
 
 class EntityAttributeExtractor:
     """
@@ -15,15 +16,42 @@ class EntityAttributeExtractor:
         """
         self.extractor = extractor
         self.domain = extractor.domain  # 领域词典
+        self._token_cache = {}
+        self._similarity_cache = {}
+        self._char_cache = {}
+
+    def _get_tokens(self, text: str) -> Set[str]:
+        cleaned_text = str(text).strip()
+        if not cleaned_text:
+            return set()
+
+        if cleaned_text not in self._token_cache:
+            self._token_cache[cleaned_text] = {w for w, _ in pseg.cut(cleaned_text)}
+
+        return self._token_cache[cleaned_text]
+
+    def _get_char_set(self, text: str) -> Set[str]:
+        cleaned_text = str(text).strip()
+        if not cleaned_text:
+            return set()
+
+        if cleaned_text not in self._char_cache:
+            normalized = re.sub(r"[^0-9A-Za-z\u4e00-\u9fff]+", "", cleaned_text)
+            self._char_cache[cleaned_text] = set(normalized)
+
+        return self._char_cache[cleaned_text]
         
     def calculate_similarity(self, entity: str, concept: str) -> float:
         """
         计算实体与概念的相似度
         使用简单的词汇重叠度计算
         """
-        # 使用jieba分词
-        entity_tokens = set([w for w, _ in pseg.cut(entity)])
-        concept_tokens = set([w for w, _ in pseg.cut(concept)])
+        cache_key = tuple(sorted((str(entity).strip(), str(concept).strip())))
+        if cache_key in self._similarity_cache:
+            return self._similarity_cache[cache_key]
+
+        entity_tokens = self._get_tokens(entity)
+        concept_tokens = self._get_tokens(concept)
         
         if not entity_tokens or not concept_tokens:
             return 0.0
@@ -31,19 +59,34 @@ class EntityAttributeExtractor:
         # 计算Jaccard相似度：交集/并集
         intersection = len(entity_tokens & concept_tokens)
         union = len(entity_tokens | concept_tokens)
-        
-        return intersection / union if union > 0 else 0.0
+        similarity = intersection / union if union > 0 else 0.0
+        self._similarity_cache[cache_key] = similarity
+        return similarity
     
     def get_top_similar_concepts(self, entity: str, top_k: int = 2) -> List[str]:
         """
         为实体找到相似度排名前top_k的概念作为关联类
         """
         similarities = []
+        entity_chars = self._get_char_set(entity)
+        candidate_concepts = []
         
         for concept in self.domain.keys():
-            if concept != entity:  # 排除自身
-                sim = self.calculate_similarity(entity, concept)
-                similarities.append((concept, sim))
+            if concept == entity:
+                continue
+
+            concept_chars = self._get_char_set(concept)
+            if entity_chars and concept_chars and entity_chars.intersection(concept_chars):
+                candidate_concepts.append(concept)
+            elif entity in concept or concept in entity:
+                candidate_concepts.append(concept)
+
+        if not candidate_concepts:
+            candidate_concepts = [concept for concept in self.domain.keys() if concept != entity]
+
+        for concept in candidate_concepts:
+            sim = self.calculate_similarity(entity, concept)
+            similarities.append((concept, sim))
         
         # 按相似度降序排序，取前top_k个且相似度必须大于0
         similarities.sort(key=lambda x: x[1], reverse=True)
@@ -253,7 +296,7 @@ class EntityAttributeExtractor:
     def _generate_option_combinations(self, options: List[str]) -> List[str]:
         """
         生成选项内容的所有组合，按照单个选项、两个选项组合、三个选项组合的顺序排列
-        只生成词典中标记为"XX型"的选项的组合，过滤掉干扰选项
+        对多选题而言，真实选项必须完整进入决策域，不能在这里被过早过滤
         
         Args:
             options: 选项内容列表，如["高原", "平原", "盆地"]
@@ -263,32 +306,29 @@ class EntityAttributeExtractor:
         """
         from itertools import combinations
         
-        # 过滤出词典中标记为"XX型"的选项（正确答案）
         valid_options = []
+        seen_options = set()
         for option in options:
-            if option in self.domain:
-                classification = self.domain[option].get('分类', '')
-                # 只保留分类以"型"结尾的选项
-                if classification.endswith('型'):
-                    valid_options.append(option)
-                    print(f"    选项 '{option}' 分类为 '{classification}'，保留")
-                else:
-                    print(f"    选项 '{option}' 分类为 '{classification}'，过滤（非答案选项）")
+            cleaned_option = str(option).strip()
+            if not cleaned_option or cleaned_option in seen_options:
+                continue
+
+            seen_options.add(cleaned_option)
+            valid_options.append(cleaned_option)
+
+            if cleaned_option in self.domain:
+                classification = self.domain[cleaned_option].get('分类', '')
+                print(f"    选项 '{cleaned_option}' 分类为 '{classification}'，保留进入决策域")
             else:
-                print(f"    选项 '{option}' 不在词典中，过滤")
+                print(f"    选项 '{cleaned_option}' 不在词典中，仍保留进入决策域")
         
-        print(f"  有效选项（XX型）: {valid_options}")
+        print(f"  有效选项: {valid_options}")
         
         combinations_list = []
         
-        # 按照组合数量排序：先单个选项，再两个选项组合，最后三个选项组合
         for r in range(1, len(valid_options) + 1):
-            current_combos = []
             for combo in combinations(valid_options, r):
-                current_combos.append('+'.join(combo))
-            # 对当前长度的组合进行排序，保证一致性
-            current_combos.sort()
-            combinations_list.extend(current_combos)
+                combinations_list.append('+'.join(combo))
         
         return combinations_list
     

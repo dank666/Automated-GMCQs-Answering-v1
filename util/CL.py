@@ -7,17 +7,20 @@ import util.basic as basic
 import util.vo as vo
 
 #if __name__ == "__main__":
-def cl(adjMat, obj, attr):
+def cl(adjMat, obj, attr, helper=None):
+        helper = helper or basic.BasicCL()
 
         numObj = len(obj)
         numAttr = len(attr)
 
-        bpcObj = basic.BasicCL().getBPCliqueObj(adjMat,obj,attr,numObj,numAttr)
-        bpcAttr = basic.BasicCL().getBPCliqueAttr(adjMat,obj,attr,numObj,numAttr)
+        bpcObj = helper.getBPCliqueObj(adjMat,obj,attr,numObj,numAttr)
+        bpcAttr = helper.getBPCliqueAttr(adjMat,obj,attr,numObj,numAttr)
+        helper._get_basis_views(bpcObj)
+        helper._get_basis_views(bpcAttr)
 
-        objResult = basic.BasicCL().objRes(obj,attr,bpcObj,bpcAttr)
+        objResult = helper.objRes(obj,attr,bpcObj,bpcAttr)
 
-        bp =  basic.BasicCL().finalBpcAll(objResult,bpcObj, bpcAttr)
+        bp =  helper.finalBpcAll(objResult,bpcObj, bpcAttr)
 
         bpCliques = bp.__getitem__(0)
 
@@ -53,6 +56,5 @@ def cl(adjMat, obj, attr):
 
         #print(objResult)
         return objResult, attrResult, bpCliques, bpcObj, bpcAttr
-
 
 

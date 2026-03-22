@@ -13,6 +13,8 @@ class GeoKeywordExtractor:
       - 近义词表（synonym CSV 或 dict）仅用于规范化/聚合（不能扩充领域词典）
       - Rouge-N 用于比较题干与候选实体属性的相似度
     """
+    _domain_cache: Dict[str, Dict[str, Dict[str, str]]] = {}
+    _synonym_cache: Dict[str, Dict[str, str]] = {}
 
     def __init__(
         self,
@@ -31,20 +33,66 @@ class GeoKeywordExtractor:
 
     # ---------------- IO ----------------
     def _load_domain(self, path: str) -> Dict[str, Dict[str, str]]:
+        if path in self._domain_cache:
+            return self._domain_cache[path]
+
         df = pd.read_csv(path, encoding="utf-8")  # 使用默认表头处理
         dom = {}
-        for _, row in df.iterrows():
+        for row in df.itertuples(index=False):
             # 使用列名而不是位置索引，避免 pandas 警告
-            k = str(row['关键字']).strip() if pd.notna(row['关键字']) else ""
+            k = str(row.关键字).strip() if pd.notna(row.关键字) else ""
             if not k or k == "nan":
                 continue
-            cat = str(row['分类']).strip() if pd.notna(row['分类']) else ""
-            parent = str(row['上级']).strip() if pd.notna(row['上级']) else ""
-            child = str(row['下级']).strip() if pd.notna(row['下级']) else ""
-            dom[k] = {"分类": cat, "上级": parent, "下级": child}
+            cat = str(row.分类).strip() if pd.notna(row.分类) else ""
+            parent = str(row.上级).strip() if pd.notna(row.上级) else ""
+            child = str(row.下级).strip() if pd.notna(row.下级) else ""
+            if k not in dom:
+                dom[k] = {"分类": cat, "上级": parent, "下级": child}
+                continue
+
+            # 多选词典里存在不少重复关键字；这里做增量合并，避免后面的行覆盖前面的决策信息。
+            existing = dom[k]
+            existing["分类"] = self._select_better_category(existing.get("分类", ""), cat)
+            existing["上级"] = self._merge_delimited_values(existing.get("上级", ""), parent)
+            existing["下级"] = self._merge_delimited_values(existing.get("下级", ""), child)
+        self._domain_cache[path] = dom
         return dom
 
+    def _select_better_category(self, current: str, incoming: str) -> str:
+        def priority(category: str) -> int:
+            if not category:
+                return -1
+            if category == "决策型":
+                return 4
+            if category.endswith("型"):
+                return 3
+            if category == "地理位置":
+                return 2
+            if category == "锚点词":
+                return 1
+            return 0
+
+        return incoming if priority(incoming) > priority(current) else current
+
+    def _merge_delimited_values(self, current: str, incoming: str) -> str:
+        values = []
+        seen = set()
+
+        for raw in (current, incoming):
+            if not raw or raw == "nan":
+                continue
+            parts = [item.strip() for item in str(raw).replace("；", "、").replace(";", "、").split("、") if item.strip()]
+            for item in parts:
+                if item not in seen:
+                    seen.add(item)
+                    values.append(item)
+
+        return "、".join(values)
+
     def _load_synonyms(self, path: str) -> Dict[str, str]:
+        if path in self._synonym_cache:
+            return self._synonym_cache[path]
+
         df = pd.read_csv(path, encoding="utf-8")
         cols = [c.lower() for c in df.columns]
         if "canonical" in cols and "synonyms" in cols:
@@ -71,6 +119,7 @@ class GeoKeywordExtractor:
             for s in syns:
                 mapping[s] = cano
             mapping[cano] = cano
+        self._synonym_cache[path] = mapping
         return mapping
 
     def _merge_synonym_dict(self, syn: Dict[str, List[str]]):

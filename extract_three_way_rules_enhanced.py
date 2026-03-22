@@ -8,6 +8,7 @@
 import re
 import os
 import pandas as pd
+import numpy as np
 from collections import defaultdict
 import math
 
@@ -278,59 +279,56 @@ def enhanced_confidence_calculation(rules, df, objects, all_attrs):
         return rules
     
     total_objects = len(objects)
+    attr_columns = all_attrs
+    data_matrix = df.iloc[:, 1:].to_numpy(dtype=int, copy=False)
     
     # 创建属性映射
     attr_id_to_col = {}
-    for i, col in enumerate(all_attrs):
+    for i, col in enumerate(attr_columns):
         attr_id_to_col[i + 1] = col
+    col_name_to_idx = {col: idx for idx, col in enumerate(attr_columns)}
     
     enriched_rules = []
     
     for rule in rules:
         premise = rule['premise']
         conclusion = rule['conclusion']
+        premise_col_indices = [
+            col_name_to_idx[attr_id_to_col[attr_id]]
+            for attr_id in premise
+            if attr_id in attr_id_to_col and attr_id_to_col[attr_id] in col_name_to_idx
+        ]
+        conclusion_col_indices = [
+            col_name_to_idx[attr_id_to_col[attr_id]]
+            for attr_id in conclusion
+            if attr_id in attr_id_to_col and attr_id_to_col[attr_id] in col_name_to_idx
+        ]
         
-        # 计算前提对象集：使用权重匹配
-        premise_objects = set()
-        premise_weights = {}  # 对象 -> 权重
+        premise_weights = {}
+        if premise_col_indices:
+            premise_slice = data_matrix[:, premise_col_indices]
+            weight_ratios = premise_slice.mean(axis=1)
+            premise_mask = weight_ratios >= 0.6
+            premise_indices = np.flatnonzero(premise_mask)
+            premise_objects = set(premise_indices.tolist())
+            premise_weights = {idx: float(weight_ratios[idx]) for idx in premise_indices}
+        else:
+            weight_ratios = np.zeros(total_objects, dtype=float)
+            premise_mask = np.zeros(total_objects, dtype=bool)
+            premise_objects = set()
         
-        for obj_idx in range(len(objects)):
-            weight = 0
-            total_conditions = 0
-            
-            for attr_id in premise:
-                if attr_id in attr_id_to_col:
-                    col_name = attr_id_to_col[attr_id]
-                    if col_name in df.columns:
-                        total_conditions += 1
-                        if df.iloc[obj_idx][col_name] == 1:
-                            weight += 1
-            
-            if total_conditions > 0:
-                weight_ratio = weight / total_conditions
-                premise_weights[obj_idx] = weight_ratio
-                
-                # 使用更灵活的阈值
-                if weight_ratio >= 0.6:  # 至少满足60%的条件
-                    premise_objects.add(obj_idx)
+        if conclusion_col_indices:
+            conclusion_slice = data_matrix[:, conclusion_col_indices]
+            conclusion_mask = np.all(conclusion_slice == 1, axis=1)
+        else:
+            conclusion_mask = np.ones(total_objects, dtype=bool)
+        conclusion_indices = np.flatnonzero(conclusion_mask)
+        conclusion_objects = set(conclusion_indices.tolist())
         
-        # 计算结论对象集
-        conclusion_objects = set()
-        for obj_idx in range(len(objects)):
-            satisfied = True
-            for attr_id in conclusion:
-                if attr_id in attr_id_to_col:
-                    col_name = attr_id_to_col[attr_id]
-                    if col_name in df.columns:
-                        if df.iloc[obj_idx][col_name] != 1:
-                            satisfied = False
-                            break
-            if satisfied:
-                conclusion_objects.add(obj_idx)
-        
-        # 计算加权交集
-        intersection = premise_objects.intersection(conclusion_objects)
-        weighted_intersection = sum(premise_weights.get(obj, 0) for obj in intersection)
+        intersection_mask = premise_mask & conclusion_mask
+        intersection_indices = np.flatnonzero(intersection_mask)
+        intersection = set(intersection_indices.tolist())
+        weighted_intersection = float(weight_ratios[intersection_mask].sum()) if premise_col_indices else 0.0
         
         # 改进的置信度计算
         if len(premise_objects) > 0:

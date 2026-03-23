@@ -156,16 +156,18 @@ def enrich_from_questions(entries, questions, default_category):
             correct_labels = {str(label).strip() for label in correct_answer if str(label).strip()}
 
         for label, option_text in options.items():
+            if label not in correct_labels:
+                continue
+
             option_fragments = split_text_fragments(option_text)
             child_fragments = option_fragments[1:]
 
-            if label in correct_labels:
-                matched_explanations = [
-                    fragment
-                    for fragment in explanation_fragments
-                    if fragment != option_text and text_similarity(fragment, option_text) >= 0.28
-                ]
-                child_fragments.extend(matched_explanations)
+            matched_explanations = [
+                fragment
+                for fragment in explanation_fragments
+                if fragment != option_text and text_similarity(fragment, option_text) >= 0.28
+            ]
+            child_fragments.extend(matched_explanations)
 
             add_entry(
                 entries,
@@ -195,7 +197,6 @@ def main():
         question_path = os.path.join(base_dir, "multiple_questions", f"{category}.json")
 
         entries = {}
-        load_dictionary(multiple_dict_path, entries)
         load_dictionary(single_dict_path, entries)
 
         if os.path.exists(question_path):

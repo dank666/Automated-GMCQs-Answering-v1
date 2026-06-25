@@ -12,6 +12,41 @@ import numpy as np
 from collections import defaultdict
 import math
 
+def _get_env_float(name, default=None):
+    value = os.environ.get(name)
+    if value is None or str(value).strip() == "":
+        return default
+    try:
+        return float(value)
+    except ValueError:
+        print(f"警告：环境变量 {name}={value!r} 不是有效数字，使用默认值 {default}")
+        return default
+
+def _percentile_threshold(values, percentile):
+    if not values:
+        return 0.0
+    percentile = max(0.0, min(1.0, float(percentile)))
+    return float(np.percentile(values, percentile * 100))
+
+def get_rule_filter_config():
+    """读取敏感性分析参数；未设置时保持原有自适应逻辑。"""
+    conf_percentile = _get_env_float("RULE_CONF_PERCENTILE")
+    supp_percentile = _get_env_float("RULE_SUPP_PERCENTILE")
+    strength_percentile = _get_env_float("RULE_STRENGTH_PERCENTILE")
+    relax_factor = _get_env_float("RULE_RELAX_FACTOR", 0.7)
+
+    percentile_mode = all(
+        value is not None
+        for value in (conf_percentile, supp_percentile, strength_percentile)
+    )
+    return {
+        "percentile_mode": percentile_mode,
+        "conf_percentile": conf_percentile,
+        "supp_percentile": supp_percentile,
+        "strength_percentile": strength_percentile,
+        "relax_factor": relax_factor,
+    }
+
 def parse_three_way_concept(line):
     """解析三支概念字符串 ((X),(Y))#((A),(B))"""
     pattern = r'\(\(([^)]*)\),\s*\(([^)]*)\)\)#\(\(([^)]*)\),\s*\(([^)]*)\)\)'
@@ -379,6 +414,19 @@ def adaptive_threshold_selection(rules):
     
     if not confidences or not supports:
         return 0.3, 0.05, 0.2  # 更宽松的默认阈值
+
+    config = get_rule_filter_config()
+    if config["percentile_mode"]:
+        min_confidence = _percentile_threshold(confidences, config["conf_percentile"])
+        min_support = _percentile_threshold(supports, config["supp_percentile"])
+        min_strength = _percentile_threshold(rule_strengths, config["strength_percentile"])
+        print(
+            "敏感性实验阈值："
+            f"conf@{config['conf_percentile']:.2f}≥{min_confidence:.3f}, "
+            f"supp@{config['supp_percentile']:.2f}≥{min_support:.3f}, "
+            f"strength@{config['strength_percentile']:.2f}≥{min_strength:.3f}"
+        )
+        return min_confidence, min_support, min_strength
     
     # 使用四分位数方法确定阈值
     confidences.sort()
@@ -408,6 +456,8 @@ def filter_high_quality_rules(rules):
     if not rules:
         return []
     
+    config = get_rule_filter_config()
+    relax_factor = config["relax_factor"]
     min_confidence, min_support, min_strength = adaptive_threshold_selection(rules)
     
     high_quality_rules = []
@@ -418,11 +468,13 @@ def filter_high_quality_rules(rules):
             high_quality_rules.append(rule)
     
     # 如果高质量规则太少，降低阈值
+    relaxed = False
     if len(high_quality_rules) < 3:
-        print("高质量规则数量不足，降低阈值...")
-        min_confidence *= 0.7
-        min_support *= 0.7
-        min_strength *= 0.7
+        relaxed = True
+        print(f"高质量规则数量不足，按松弛因子 {relax_factor:.2f} 降低阈值...")
+        min_confidence *= relax_factor
+        min_support *= relax_factor
+        min_strength *= relax_factor
         
         high_quality_rules = []
         for rule in rules:
@@ -433,6 +485,12 @@ def filter_high_quality_rules(rules):
     
     # 按综合强度排序
     high_quality_rules.sort(key=lambda x: x['rule_strength'], reverse=True)
+    for rule in high_quality_rules:
+        rule["_threshold_relaxed"] = relaxed
+        rule["_threshold_confidence"] = min_confidence
+        rule["_threshold_support"] = min_support
+        rule["_threshold_strength"] = min_strength
+        rule["_relax_factor"] = relax_factor
     
     return high_quality_rules
 

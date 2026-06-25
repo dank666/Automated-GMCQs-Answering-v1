@@ -4,9 +4,11 @@ import argparse
 import sys
 import re
 from itertools import combinations
+import pandas as pd
 
 # 导入自定义模块
 from geo_keyword_extractor import GeoKeywordExtractor
+from geo_keyword_extractor_dcr_integration import create_extractor_with_dcr
 from entity_attribute import EntityAttributeExtractor
 from formal_context_builder import FormalContextBuilder
 import jieba
@@ -22,6 +24,22 @@ QUESTION_NOISE_WORDS = {
     "下列", "关于", "说法", "的是", "正确", "错误", "属于", "不属于",
     "包括", "不包括", "结合", "相关", "有", "无", "其中"
 }
+QUESTION_GENERIC_WORDS = {
+    "一个", "一种", "一定", "主要", "同时", "能够", "可以", "进行", "通过",
+    "由于", "因此", "因为", "所以", "形成", "影响", "决定", "因素", "多种",
+    "不同", "直接", "间接", "表现", "体现", "具有", "没有", "比较", "分析",
+    "判断", "选择", "说明", "可能", "最可能", "最主要", "过程中", "地区",
+    "区域", "环境", "条件", "特点", "变化", "差异", "作用", "关系", "导致",
+    "增加", "减少", "提高", "降低", "较高", "较低", "较大", "较小", "明显",
+    "适合", "不适合", "合理", "不合理", "正确", "错误", "正确的是", "错误的是",
+    "根据", "当地", "中部", "东部", "西部", "南部", "北部", "海岸", "沿海",
+    "高低", "组成部分", "密切相关", "变化规律", "覆盖率"
+}
+GEOGRAPHIC_HINT_CHARS = set(
+    "土壤植被森林草原荒漠沙漠湿地苔原针叶阔叶灌丛乔木草本根系腐殖质有机质"
+    "水热温降雨径流河湖海洋冰川地形地貌山地高原平原盆地丘陵坡向海拔纬度经度"
+    "气候季风干旱湿润盐碱酸性碱性中性肥力养分质地淋溶侵蚀沉积风化成土"
+)
 NEGATIVE_QUESTION_CUES = [
     "不正确", "错误的是", "错误的有", "不属于", "不包括", "不可能",
     "不能", "不利于", "不符合", "不合理", "不应", "不宜", "不具备"
@@ -285,7 +303,120 @@ def _refine_keywords(keywords):
     refined = [kw for kw in keywords if str(kw).strip() and str(kw).strip() not in QUESTION_NOISE_WORDS]
     return refined if refined else keywords
 
-def _predict_multiple_answers(option_scores, direct_scores, combo_scores, opts_dict):
+def _is_good_dcr_candidate(term):
+    text = str(term or "").strip()
+    normalized = _normalize_text(text)
+    if not normalized:
+        return False
+    if text in QUESTION_NOISE_WORDS or text in QUESTION_GENERIC_WORDS:
+        return False
+    if normalized.isdigit():
+        return False
+    if len(normalized) < 2 or len(normalized) > 24:
+        return False
+    if re.fullmatch(r"[A-Za-z0-9]+", normalized):
+        return False
+    if any(ch in text for ch in "（）()，,。；;：:"):
+        return False
+    if len(normalized) == 2 and not (set(normalized) & GEOGRAPHIC_HINT_CHARS):
+        return False
+    return True
+
+def _clear_keyword_extractor_cache(domain_path):
+    GeoKeywordExtractor._domain_cache.pop(domain_path, None)
+
+def _resolve_domain_path(json_path, custom_dict=None):
+    if custom_dict:
+        if os.path.exists(custom_dict):
+            return custom_dict
+        raise FileNotFoundError(
+            f"指定的词典文件不存在: {custom_dict}\n"
+            f"请先创建该文件，或改用已有词典路径，例如 dict_multiple/SV.csv。"
+        )
+
+    filename = os.path.basename(json_path).lower().replace(" ", "_")
+    is_single = "single" in os.path.dirname(json_path).lower() or filename.startswith("single")
+    dict_dir = "dict_single" if is_single else "dict_multiple"
+    category_map = {
+        "climatology": "Climatology.csv",
+        "hydrology": "Hydrology.csv",
+        "soil_and_vegetation": "SV.csv",
+        "topography_and_geomorphology": "TG.csv",
+        "human_and_economic_geography": "HEG.csv",
+        "geographical_processes_and_principles": "GPP.csv",
+    }
+
+    for marker, dict_name in category_map.items():
+        if marker in filename:
+            inferred_path = os.path.join(dict_dir, dict_name)
+            if os.path.exists(inferred_path):
+                return inferred_path
+
+    fallback = os.path.join(dict_dir, "Climatology.csv")
+    if os.path.exists(fallback):
+        return fallback
+    raise FileNotFoundError(f"无法为题库自动推断词典，请使用 -d 显式指定词典文件: {json_path}")
+
+def _load_geography_questions(json_path):
+    with open(json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return data, data.get("geography_questions", [])
+
+def _write_geography_questions(json_path, questions):
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump({"geography_questions": questions}, f, ensure_ascii=False, indent=2)
+
+def _build_llm_config(provider=None, model=None, api_key=None):
+    provider = (provider or "").strip().lower()
+    if not provider:
+        if os.environ.get("DEEPSEEK_API_KEY"):
+            provider = "deepseek"
+        elif os.environ.get("OPENAI_API_KEY"):
+            provider = "openai"
+        elif os.environ.get("ANTHROPIC_API_KEY"):
+            provider = "anthropic"
+        else:
+            provider = "local"
+
+    env_keys = {
+        "deepseek": "DEEPSEEK_API_KEY",
+        "openai": "OPENAI_API_KEY",
+        "anthropic": "ANTHROPIC_API_KEY",
+    }
+    default_models = {
+        "deepseek": "deepseek-chat",
+        "openai": "gpt-3.5-turbo",
+        "anthropic": "claude-3-opus-20240229",
+        "local": "qwen2",
+    }
+
+    config = {
+        "provider": provider,
+        "model": model or default_models.get(provider, default_models["local"]),
+    }
+    resolved_key = api_key or os.environ.get(env_keys.get(provider, ""), "")
+    if resolved_key:
+        config["api_key"] = resolved_key
+    return config
+
+def _validate_llm_config_for_dcr(llm_config):
+    provider = llm_config.get("provider")
+    if provider in {"deepseek", "openai", "anthropic"} and not llm_config.get("api_key"):
+        env_key = {
+            "deepseek": "DEEPSEEK_API_KEY",
+            "openai": "OPENAI_API_KEY",
+            "anthropic": "ANTHROPIC_API_KEY",
+        }[provider]
+        raise ValueError(
+            f"{provider} 需要 API Key。请先设置环境变量 {env_key}，"
+            f"或在命令中添加 --api-key。"
+        )
+
+def _is_climatology_category(category):
+    category_text = str(category or "").lower()
+    return "climatology" in category_text or "气候" in category_text or "气象" in category_text
+
+def _predict_multiple_answers(option_scores, direct_scores, combo_scores, opts_dict, category=None):
     if not option_scores:
         return []
 
@@ -300,10 +431,23 @@ def _predict_multiple_answers(option_scores, direct_scores, combo_scores, opts_d
     top1 = top_scores[0] if len(top_scores) > 0 else 0.0
     top2 = top_scores[1] if len(top_scores) > 1 else 0.0
     top3 = top_scores[2] if len(top_scores) > 2 else 0.0
+    top_labels = ranked_labels[:3]
 
     direct_max_score = max(direct_scores.values()) if direct_scores else 0.0
     direct_min_score = min(direct_scores.values()) if direct_scores else 0.0
-    if direct_max_score > 1.0 and direct_min_score / direct_max_score >= 0.80:
+    direct_ranked = sorted(labels, key=lambda label: (direct_scores.get(label, 0.0), label), reverse=True)
+    direct_top = direct_scores.get(direct_ranked[0], 0.0) if direct_ranked else 0.0
+    direct_third = direct_scores.get(direct_ranked[2], 0.0) if len(direct_ranked) >= 3 else 0.0
+    direct_third_ratio = direct_third / direct_top if direct_top > 0 else 0.0
+    score_spread = top1 - top3
+    is_true_three_way_tie = (
+        len(labels) >= 3
+        and top3 >= 0.92
+        and score_spread <= 0.08
+        and direct_third_ratio >= 0.88
+    )
+
+    if direct_max_score > 1.0 and direct_min_score / direct_max_score >= 0.92 and is_true_three_way_tie:
         return sorted(labels)
 
     all_labels_set = frozenset(labels)
@@ -318,13 +462,20 @@ def _predict_multiple_answers(option_scores, direct_scores, combo_scores, opts_d
             best_pair_combo_score = pair_combo_score
             best_pair = list(pair)
 
-    if triple_combo_score >= max(best_pair_combo_score * 1.15, max_score * 0.30):
-        selected = [label for label in labels if normalized_scores[label] >= 0.58]
-        return sorted(selected or labels)
+    if triple_combo_score >= max(best_pair_combo_score * 1.25, max_score * 0.35) and is_true_three_way_tie:
+        return sorted(labels)
 
-    if top3 >= 0.93 and top2 >= 0.96 and abs(top1 - top3) <= 0.08:
-        selected = [label for label in labels if normalized_scores[label] >= 0.58]
-        return sorted(selected)
+    if is_true_three_way_tie:
+        return sorted(labels)
+
+    if _is_climatology_category(category) and len(labels) >= 3:
+        climatology_all_supported = (
+            top3 >= 0.75
+            and score_spread <= 0.25
+            and direct_third_ratio >= 0.70
+        )
+        if climatology_all_supported:
+            return sorted(labels)
 
     if best_pair:
         outside_labels = [label for label in labels if label not in best_pair]
@@ -333,30 +484,33 @@ def _predict_multiple_answers(option_scores, direct_scores, combo_scores, opts_d
         if best_pair_combo_score >= max_score * 0.18 and pair_floor >= 0.45 and pair_floor - outside_score >= 0.05:
             return sorted(best_pair)
 
-    if top2 >= 0.58 and (top2 - top3 >= 0.10 or top3 <= 0.48):
+    if top2 >= 0.58 and (top2 - top3 >= 0.08 or top3 <= 0.62):
         return sorted(ranked_labels[:2])
 
-    strong_labels = [label for label in labels if normalized_scores[label] >= 0.68]
+    strong_labels = [label for label in labels if normalized_scores[label] >= 0.72]
     if len(strong_labels) >= 2:
+        if len(strong_labels) == 3 and not is_true_three_way_tie:
+            return sorted(ranked_labels[:2])
         return sorted(strong_labels)
+
+    if len(top_labels) >= 2 and top2 >= 0.68:
+        return sorted(top_labels[:2])
 
     return [ranked_labels[0]]
 
-def evaluate_json(json_path, custom_dict=None):
+def evaluate_json(json_path, custom_dict=None, answer_overrides=None):
     global _JIEBA_READY
+    answer_overrides = answer_overrides or {}
     print("="*70)
     print(f"【批量处理模式启动】目标文件: {json_path}")
     print("="*70)
 
-    # 读取 JSON 文件
     try:
-        with open(json_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        _, questions = _load_geography_questions(json_path)
     except Exception as e:
         print(f"读取文件失败: {e}")
         return
-        
-    questions = data.get("geography_questions", [])
+
     if not questions:
         print("未在文件中找到 geography_questions 列表！")
         return
@@ -369,19 +523,7 @@ def evaluate_json(json_path, custom_dict=None):
     
     syn_path = "geo_synonyms.csv"
     
-    # 支持自定义选择词典
-    if custom_dict and os.path.exists(custom_dict):
-        domain_path = custom_dict
-    else:
-        # 动态根据当前题型判断所用字典（后备默认逻辑）
-        if "single_" in os.path.basename(json_path):
-            domain_path = "单选词典.csv"
-        else:
-            domain_path = "多选词典.csv"
-            
-        if not os.path.exists(domain_path):
-            domain_path = "多选词典.csv" # 兜底逻辑
-        
+    domain_path = _resolve_domain_path(json_path, custom_dict)
     print(f">>> 使用领域词典: {domain_path}")
     
     # 初始化核心特征提取器
@@ -465,8 +607,20 @@ def evaluate_json(json_path, custom_dict=None):
             )
 
             question_type = str(q_info.get("type", "")).strip().lower()
-            if question_type == "multiple":
-                predicted_answer = _predict_multiple_answers(option_scores, direct_scores, combo_scores, opts_dict)
+            override_answer = answer_overrides.get(str(q_info.get("id")))
+            prediction_source = "symbolic_system"
+            if override_answer:
+                predicted_answer = sorted(override_answer)
+                prediction_source = "dcr_answer_override"
+                print(f"[*] 使用DCR辅助判题覆盖预测: {predicted_answer}")
+            elif question_type == "multiple":
+                predicted_answer = _predict_multiple_answers(
+                    option_scores,
+                    direct_scores,
+                    combo_scores,
+                    opts_dict,
+                    category=q_info.get("geography_category"),
+                )
             else:
                 predicted_answer = _predict_single_answer(
                     option_scores,
@@ -491,6 +645,7 @@ def evaluate_json(json_path, custom_dict=None):
                 "options": opts_dict,
                 "correct_answer": correct_answer,
                 "predicted_answer": predicted_answer,
+                "prediction_source": prediction_source,
                 "is_correct": is_correct,
                 "option_scores": {k: round(v, 6) for k, v in option_scores.items()},
                 "direct_scores": {k: round(v, 6) for k, v in direct_scores.items()},
@@ -523,6 +678,7 @@ def evaluate_json(json_path, custom_dict=None):
             f.write(f"     选项: {opts_str}\n")
             f.write(f"     正确答案: {res['correct_answer']}\n")
             f.write(f"     预测答案: {res['predicted_answer']}  {'[正确]' if res['is_correct'] else '[错误]'}\n")
+            f.write(f"     预测来源: {res.get('prediction_source', 'symbolic_system')}\n")
             f.write(f"     选项得分: {res['option_scores']}\n")
             f.write(f"     直接证据得分: {res['direct_scores']}\n")
             f.write(f"     规则证据得分: {res['rule_scores']}\n")
@@ -546,14 +702,514 @@ def evaluate_json(json_path, custom_dict=None):
         "results": all_results_summary,
     }
 
+def _detect_missing_terms_by_question(json_path, domain_path, allowed_question_ids=None):
+    _, questions = _load_geography_questions(json_path)
+    allowed_question_ids = set(allowed_question_ids) if allowed_question_ids is not None else None
+    extractor = create_extractor_with_dcr(
+        domain_csv=domain_path,
+        synonym_csv="geo_synonyms.csv" if os.path.exists("geo_synonyms.csv") else None,
+        enable_dcr=False,
+    )
+
+    records = []
+    unique_terms = []
+    seen_terms = set()
+    contexts_by_term = {}
+    for index, question in enumerate(questions, start=1):
+        if allowed_question_ids is not None and question.get("id") not in allowed_question_ids:
+            continue
+        stem = question.get("question", "")
+        options = question.get("options", {}) or {}
+        combined_text = "。".join([stem] + [str(value) for value in options.values()])
+        missing_terms = [
+            term for term in extractor.detect_missing_keywords(combined_text)
+            if _is_good_dcr_candidate(term)
+        ]
+        missing_terms = _unique_terms(missing_terms)
+        if not missing_terms:
+            continue
+
+        option_text = "；".join(f"{label}. {value}" for label, value in options.items())
+        for term in missing_terms:
+            if term not in seen_terms:
+                seen_terms.add(term)
+                unique_terms.append(term)
+            contexts_by_term.setdefault(term, []).append({
+                "question_index": index,
+                "question_id": question.get("id"),
+                "question": stem,
+                "options": option_text,
+            })
+
+        records.append({
+            "question_index": index,
+            "question_id": question.get("id"),
+            "question": stem,
+            "missing_terms": missing_terms,
+        })
+
+    return records, unique_terms, questions, contexts_by_term
+
+def _sample_domain_entries(domain_path, limit=12):
+    try:
+        df = pd.read_csv(domain_path, encoding="utf-8")
+    except Exception:
+        return []
+
+    examples = []
+    for _, row in df.head(limit * 4).iterrows():
+        keyword = str(row.get("关键字", "")).strip()
+        category = str(row.get("分类", "")).strip()
+        parent = str(row.get("上级", "")).strip()
+        child = str(row.get("下级", "")).strip()
+        if keyword and keyword != "nan" and category and category != "nan":
+            examples.append(f"{keyword} | {category} | 上级:{parent} | 下级:{child}")
+        if len(examples) >= limit:
+            break
+    return examples
+
+def _build_term_context(term, contexts_by_term, domain_examples):
+    contexts = contexts_by_term.get(term, [])[:2]
+    parts = [
+        "任务: 为地理试题词典补充概念关系。请优先给出能帮助选项判断的上级/下级或相关概念。",
+        f"待补充术语: {term}",
+    ]
+    if domain_examples:
+        parts.append("当前词典示例:")
+        parts.extend(domain_examples[:8])
+    for item in contexts:
+        parts.append(f"题目ID: {item.get('question_id')}")
+        parts.append(f"题干: {item.get('question')}")
+        parts.append(f"选项: {item.get('options')}")
+    return "\n".join(parts)
+
+def _retrieve_missing_terms_with_context(dcr_extractor, terms, contexts_by_term, domain_path):
+    domain_examples = _sample_domain_entries(domain_path)
+    results = {}
+    if not dcr_extractor.dcr:
+        return results
+
+    for index, term in enumerate(terms, start=1):
+        if index == 1 or index % 10 == 0:
+            print(f">>> DCR进度: {index}/{len(terms)}")
+        context = _build_term_context(term, contexts_by_term, domain_examples)
+        entry = dcr_extractor.dcr.retrieve_concept(term, context=context)
+        results[term] = entry
+        if entry:
+            dcr_extractor._record_missing(term, entry)
+    return results
+
+def _build_records_for_question_ids(questions, question_ids):
+    question_ids = set(question_ids or [])
+    records = []
+    for index, question in enumerate(questions, start=1):
+        if question.get("id") not in question_ids:
+            continue
+        records.append({
+            "question_index": index,
+            "question_id": question.get("id"),
+            "question": question.get("question", ""),
+            "missing_terms": [],
+        })
+    return records
+
+def _collect_existing_domain_terms(question, domain_path, top_k=12):
+    extractor = GeoKeywordExtractor(
+        domain_csv=domain_path,
+        synonym_csv="geo_synonyms.csv" if os.path.exists("geo_synonyms.csv") else None,
+    )
+    options = question.get("options", {}) or {}
+    combined_text = "。".join([question.get("question", "")] + [str(value) for value in options.values()])
+    keywords = _refine_keywords(extractor.extract_keywords(combined_text, top_k=top_k))
+
+    terms = {}
+    for keyword in keywords:
+        entry = extractor.domain_entry(keyword)
+        if entry:
+            terms[keyword] = entry
+
+    for option_text in options.values():
+        entry = extractor.domain_entry(option_text)
+        if entry:
+            terms[str(option_text)] = entry
+
+    return terms
+
+def _parse_llm_answer_label(response, option_labels):
+    text = str(response or "").strip()
+    try:
+        data = json.loads(text)
+        if isinstance(data, dict):
+            raw = data.get("answer") or data.get("答案") or data.get("label") or data.get("选项")
+            if isinstance(raw, list):
+                labels = [str(item).strip().upper() for item in raw]
+            else:
+                labels = [str(raw).strip().upper()]
+            labels = [label for label in labels if label in option_labels]
+            if labels:
+                return sorted(set(labels))
+    except json.JSONDecodeError:
+        pass
+
+    labels = re.findall(r"\b[A-Z]\b", text.upper())
+    labels = [label for label in labels if label in option_labels]
+    return sorted(set(labels)) if labels else []
+
+def _build_single_question_dcr_prompt(question, related_terms):
+    options = question.get("options", {}) or {}
+    term_lines = []
+    for term, info in related_terms.items():
+        if not info:
+            continue
+        term_lines.append(
+            f"- {term}: 分类={info.get('分类', '')}; 上级={info.get('上级', '')}; 下级={info.get('下级', '')}"
+        )
+
+    option_text = "\n".join(f"{label}. {value}" for label, value in options.items())
+    term_text = "\n".join(term_lines) if term_lines else "（无）"
+    return f"""你是地理选择题判题助手。请只根据题干、选项和补充词典信息判断单选题答案。
+
+题干:
+{question.get('question', '')}
+
+选项:
+{option_text}
+
+DCR补充词典信息:
+{term_text}
+
+要求:
+1. 这是单选题，只能选择一个选项。
+2. 不要解释，不要输出多余文字。
+3. 按JSON回答: {{"answer": "A", "confidence": 0.85}}
+"""
+
+def _generate_dcr_answer_overrides(dcr_extractor, questions, missing_records, retrieval_results, domain_path):
+    if not dcr_extractor.dcr or not dcr_extractor.dcr.llm_provider:
+        return {}
+
+    question_by_id = {q.get("id"): q for q in questions}
+    overrides = {}
+    for record in missing_records:
+        qid = record.get("question_id")
+        question = question_by_id.get(qid)
+        if not question or str(question.get("type", "")).strip().lower() == "multiple":
+            continue
+
+        options = question.get("options", {}) or {}
+        option_labels = set(options.keys())
+        related_terms = {
+            term: retrieval_results.get(term)
+            for term in record.get("missing_terms", [])
+            if retrieval_results.get(term)
+        }
+        if not related_terms:
+            related_terms = _collect_existing_domain_terms(question, domain_path)
+        if not related_terms:
+            continue
+
+        prompt = _build_single_question_dcr_prompt(question, related_terms)
+        try:
+            response = dcr_extractor.dcr.llm_provider.query(prompt, max_tokens=200)
+        except Exception as e:
+            print(f">>> DCR辅助判题失败 Q{qid}: {e}")
+            continue
+
+        answer = _parse_llm_answer_label(response, option_labels)
+        if len(answer) == 1:
+            overrides[str(qid)] = answer
+            print(f">>> DCR辅助判题 Q{qid}: {answer[0]}")
+
+    return overrides
+
+def _index_results_by_question_id(evaluation_result):
+    indexed = {}
+    for item in (evaluation_result or {}).get("results", []):
+        indexed[str(item.get("question_id"))] = item
+    return indexed
+
+def _write_dcr_reports(
+    report_path,
+    summary_path,
+    domain_path,
+    llm_config,
+    dcr_target,
+    baseline,
+    affected_baseline_count,
+    after_result,
+    missing_records,
+    retrieval_results,
+    answer_overrides=None,
+    enable_answer_override=False,
+):
+    baseline_by_id = _index_results_by_question_id(baseline)
+    after_by_id = _index_results_by_question_id(after_result)
+
+    comparisons = []
+    improved = declined = unchanged = 0
+    before_correct = after_correct = 0
+    for record in missing_records:
+        qid = str(record.get("question_id"))
+        before = baseline_by_id.get(qid, {})
+        after = after_by_id.get(qid, {})
+        before_ok = bool(before.get("is_correct"))
+        after_ok = bool(after.get("is_correct"))
+        before_correct += int(before_ok)
+        after_correct += int(after_ok)
+        if before_ok != after_ok:
+            if after_ok:
+                improved += 1
+            else:
+                declined += 1
+        else:
+            unchanged += 1
+
+        comparisons.append({
+            "question_id": record.get("question_id"),
+            "question_index": record.get("question_index"),
+            "missing_terms": record.get("missing_terms", []),
+            "before_correct": before_ok,
+            "after_correct": after_ok,
+            "before_prediction": before.get("predicted_answer"),
+            "after_prediction": after.get("predicted_answer"),
+            "before_prediction_source": before.get("prediction_source", "symbolic_system"),
+            "after_prediction_source": after.get("prediction_source", "symbolic_system"),
+            "correct_answer": before.get("correct_answer") or after.get("correct_answer"),
+        })
+
+    report = {
+        "dictionary": domain_path,
+        "llm_provider": llm_config.get("provider"),
+        "llm_model": llm_config.get("model"),
+        "dcr_target": dcr_target,
+        "dcr_answer_override_enabled": enable_answer_override,
+        "baseline": {
+            "total_count": (baseline or {}).get("total_count", 0),
+            "correct_count": (baseline or {}).get("correct_count", 0),
+            "accuracy": (baseline or {}).get("accuracy", 0.0),
+        },
+        "overall_after_dcr": {
+            "total_count": (after_result or {}).get("total_count", 0),
+            "correct_count": (after_result or {}).get("correct_count", 0),
+            "accuracy": (after_result or {}).get("accuracy", 0.0),
+        },
+        "affected_questions_before": {
+            "total_count": affected_baseline_count,
+            "correct_count": before_correct,
+            "accuracy": before_correct / affected_baseline_count if affected_baseline_count else 0.0,
+        },
+        "affected_questions_after": {
+            "total_count": affected_baseline_count,
+            "correct_count": after_correct,
+            "accuracy": after_correct / affected_baseline_count if affected_baseline_count else 0.0,
+        },
+        "delta": {
+            "correct_count_delta": after_correct - before_correct,
+            "accuracy_delta": (
+                (after_correct / affected_baseline_count if affected_baseline_count else 0.0)
+                - (before_correct / affected_baseline_count if affected_baseline_count else 0.0)
+            ),
+            "overall_correct_count_delta": (after_result or {}).get("correct_count", 0) - (baseline or {}).get("correct_count", 0),
+            "overall_accuracy_delta": (after_result or {}).get("accuracy", 0.0) - (baseline or {}).get("accuracy", 0.0),
+            "improved_questions": improved,
+            "declined_questions": declined,
+            "unchanged_questions": unchanged,
+        },
+        "missing_records": missing_records,
+        "retrieved_terms": {
+            term: info for term, info in retrieval_results.items() if info
+        },
+        "answer_overrides": answer_overrides or {},
+        "failed_terms": [
+            term for term, info in retrieval_results.items() if not info
+        ],
+        "comparisons": comparisons,
+    }
+
+    os.makedirs(os.path.dirname(report_path), exist_ok=True)
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
+
+    with open(summary_path, "w", encoding="utf-8") as f:
+        f.write("=== DCR 两阶段评测摘要 ===\n")
+        f.write(f"词典: {domain_path}\n")
+        f.write(f"LLM: {llm_config.get('provider')} / {llm_config.get('model')}\n")
+        f.write(f"DCR扩展范围: {dcr_target}\n")
+        f.write(f"DCR辅助判题覆盖: {'启用' if enable_answer_override else '禁用'}\n")
+        f.write(f"基线整体准确率: {report['baseline']['accuracy'] * 100:.2f}% ")
+        f.write(f"({report['baseline']['correct_count']}/{report['baseline']['total_count']})\n")
+        f.write(f"DCR后整体准确率: {report['overall_after_dcr']['accuracy'] * 100:.2f}% ")
+        f.write(f"({report['overall_after_dcr']['correct_count']}/{report['overall_after_dcr']['total_count']})\n")
+        f.write(f"整体准确率变化: {report['delta']['overall_accuracy_delta'] * 100:+.2f}%\n")
+        f.write(f"陌生词相关题目前准确率: {report['affected_questions_before']['accuracy'] * 100:.2f}% ")
+        f.write(f"({before_correct}/{affected_baseline_count})\n")
+        f.write(f"扩词典后二次准确率: {report['affected_questions_after']['accuracy'] * 100:.2f}% ")
+        f.write(f"({after_correct}/{affected_baseline_count})\n")
+        f.write(f"准确率变化（只比较陌生词相关题目）: {report['delta']['accuracy_delta'] * 100:+.2f}%\n")
+        f.write(f"改善/下降/不变: {improved}/{declined}/{unchanged}\n")
+        f.write(f"成功扩展词条数: {len(report['retrieved_terms'])}\n")
+        f.write(f"DCR辅助判题覆盖数: {len(report['answer_overrides'])}\n")
+        f.write(f"检索失败词条数: {len(report['failed_terms'])}\n")
+        if not report["retrieved_terms"] and report["failed_terms"]:
+            f.write("提示: 本次没有成功扩展任何词条，二次测试实际仍使用原词典。\n")
+        f.write("说明: 基线和DCR后整体准确率使用全题库；扩展前后子集准确率只使用本轮DCR实际覆盖的题目。\n")
+
+def evaluate_json_with_dcr(
+    json_path,
+    custom_dict=None,
+    llm_provider=None,
+    model=None,
+    api_key=None,
+    cache_dir=".dcr_cache",
+    dcr_target="wrong",
+    enable_answer_override=False,
+):
+    domain_path = _resolve_domain_path(json_path, custom_dict)
+    llm_config = _build_llm_config(llm_provider, model, api_key)
+    try:
+        _validate_llm_config_for_dcr(llm_config)
+    except ValueError as e:
+        print(f"DCR配置错误: {e}")
+        return None
+
+    print("=" * 70)
+    print("【DCR 两阶段批量测试】")
+    print(f"题库: {json_path}")
+    print(f"词典: {domain_path}")
+    print(f"LLM: {llm_config.get('provider')} / {llm_config.get('model')}")
+    print("=" * 70)
+
+    print("\n>>> 阶段1：使用原词典进行基线测试")
+    baseline = evaluate_json(json_path, custom_dict=domain_path)
+    if not baseline:
+        print("基线测试失败，终止 DCR 流程。")
+        return None
+
+    target_question_ids = None
+    if dcr_target == "wrong":
+        target_question_ids = {
+            item.get("question_id")
+            for item in baseline.get("results", [])
+            if not item.get("is_correct")
+        }
+        print(f"\n>>> 阶段2：检测基线答错题中的陌生术语/关键词（{len(target_question_ids)}题）")
+    else:
+        print("\n>>> 阶段2：检测全部题目中的陌生术语/关键词")
+
+    missing_records, unique_terms, questions, contexts_by_term = _detect_missing_terms_by_question(
+        json_path,
+        domain_path,
+        allowed_question_ids=target_question_ids,
+    )
+    print(f">>> 涉及陌生词的题目数: {len(missing_records)}")
+    print(f">>> 唯一陌生词数: {len(unique_terms)}")
+
+    if not unique_terms:
+        print("未检测到需要新增扩展的陌生词，将直接使用当前词典进行二次系统评测。")
+        retrieval_results = {}
+        missing_records = _build_records_for_question_ids(questions, target_question_ids or [])
+        dcr_extractor = create_extractor_with_dcr(
+            domain_csv=domain_path,
+            synonym_csv="geo_synonyms.csv" if os.path.exists("geo_synonyms.csv") else None,
+            llm_config=llm_config,
+            cache_dir=cache_dir,
+            enable_dcr=True,
+            auto_update=False,
+        )
+    else:
+        print("\n>>> 阶段3：调用 DCR 扩展词典")
+        dcr_extractor = create_extractor_with_dcr(
+            domain_csv=domain_path,
+            synonym_csv="geo_synonyms.csv" if os.path.exists("geo_synonyms.csv") else None,
+            llm_config=llm_config,
+            cache_dir=cache_dir,
+            enable_dcr=True,
+            auto_update=True,
+        )
+        retrieval_results = _retrieve_missing_terms_with_context(
+            dcr_extractor,
+            unique_terms,
+            contexts_by_term,
+            domain_path,
+        )
+        dcr_extractor.export_missing_concepts(os.path.join("test_results", "dcr_missing_concepts.json"))
+        _clear_keyword_extractor_cache(domain_path)
+
+    answer_overrides = {}
+    if enable_answer_override:
+        print("\n>>> 阶段3.5：对DCR覆盖的单选错题进行辅助判题（已显式启用，不计入纯系统能力评测）")
+        answer_overrides = _generate_dcr_answer_overrides(
+            dcr_extractor,
+            questions,
+            missing_records,
+            retrieval_results,
+            domain_path,
+        )
+        print(f">>> DCR辅助判题覆盖题数: {len(answer_overrides)}")
+    else:
+        print("\n>>> 阶段3.5：跳过DCR辅助判题，二次评测只统计系统自身预测")
+
+    affected_ids = {record["question_id"] for record in missing_records}
+    affected_questions = [q for q in questions if q.get("id") in affected_ids]
+    _write_geography_questions(os.path.join("test_results", "dcr_affected_questions.json"), affected_questions)
+
+    print("\n>>> 阶段4：使用扩展后的词典重新测试完整题库")
+    after_result = evaluate_json(json_path, custom_dict=domain_path, answer_overrides=answer_overrides)
+
+    report_path = os.path.join("test_results", "dcr_evaluation_report.json")
+    summary_path = os.path.join("test_results", "dcr_evaluation_summary.txt")
+    _write_dcr_reports(
+        report_path=report_path,
+        summary_path=summary_path,
+        domain_path=domain_path,
+        llm_config=llm_config,
+        dcr_target=dcr_target,
+        baseline=baseline,
+        affected_baseline_count=len(affected_questions),
+        after_result=after_result,
+        missing_records=missing_records,
+        retrieval_results=retrieval_results,
+        answer_overrides=answer_overrides,
+        enable_answer_override=enable_answer_override,
+    )
+
+    print("\n>>> DCR 两阶段评测完成")
+    print(f">>> 详细报告: {report_path}")
+    print(f">>> 摘要报告: {summary_path}")
+    return after_result
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="一键批量测试题库并验证准确率")
     parser.add_argument("json_file", nargs='?', default=None, help="题目JSON文件路径")
     parser.add_argument("-d", "--dict", default=None, help="可选：指定要使用的领域词典文件路径 (例如: single_dictionary/dic1.csv)")
+    parser.add_argument("--enable-dcr", action="store_true", help="启用DCR两阶段评测：先测原词典，再扩展词典并重测陌生词相关题目")
+    parser.add_argument("--llm-provider", choices=["deepseek", "openai", "anthropic", "local"], default=None, help="DCR调用的大模型提供方；不填时按环境变量自动选择")
+    parser.add_argument("--model", default=None, help="DCR调用的模型名称；不填时使用提供方默认模型")
+    parser.add_argument("--api-key", default=None, help="可选：直接传入API Key；通常建议用环境变量预设")
+    parser.add_argument("--cache-dir", default=".dcr_cache", help="DCR缓存目录")
+    parser.add_argument("--dcr-target", choices=["wrong", "all"], default="wrong", help="DCR扩展范围：wrong=只扩展基线答错题；all=扩展全部检测到陌生词的题目")
+    parser.add_argument(
+        "--enable-dcr-answer-override",
+        action="store_true",
+        help="显式启用旧版DCR辅助判题覆盖。默认关闭；关闭时DCR只扩展词典，准确率只统计系统自身预测。",
+    )
     args = parser.parse_args()
 
     if args.json_file and os.path.exists(args.json_file):
-        evaluate_json(args.json_file, custom_dict=args.dict)
+        if args.enable_dcr:
+            evaluate_json_with_dcr(
+                args.json_file,
+                custom_dict=args.dict,
+                llm_provider=args.llm_provider,
+                model=args.model,
+                api_key=args.api_key,
+                cache_dir=args.cache_dir,
+                dcr_target=args.dcr_target,
+                enable_answer_override=args.enable_dcr_answer_override,
+            )
+        else:
+            evaluate_json(args.json_file, custom_dict=args.dict)
     else:
         print("请提供有效的 JSON 文件路径。")
-        print("示例语法：python batch_evaluate.py single_questions/single_Climatology.json -d dic_all/dic_all_single_multiple.csv")
+        print("示例语法：python batch_evaluate.py single_questions/Climatology.json -d dict_single/Climatology.csv")
+        print("启用DCR：python batch_evaluate.py single_questions/Climatology.json -d dict_single/Climatology.csv --enable-dcr --llm-provider deepseek")
